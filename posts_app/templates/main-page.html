@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Residências disponíveis para alocar ou dividir aluguel - Tem Vagas{% endblock %}
+
+{% block content %}
+	<hr>
+	{% comment %} <a class="btn btn-success m-3" href="{% url 'create-recommendation' %}">Recomende aqui</a> {% endcomment %}
+	<h5>Recomendações em Destaque</h5>
+	<br>
+	<div class="row row-cols-1 row-cols-md-3 g-4" >
+		{% for imovel in imovel %} 
+			<div class="col">
+				<div class="card h-100 text-bg-light">
+					<img src="{{imovel.image.url}}" class="card-img-top" alt="...">
+					<div class="card-body">
+						<h3>R$ {{imovel.valor_aluguel}}</h3>
+						<p>Quartos: {{imovel.quantidade_quartos}}</p>
+						<p>Banheiros: {{imovel.quantidade_banheiros}}</p>	
+						<a class="btn btn-info" href="{% url 'recommendation-detail' imovel.id %}">Ver+</a> 
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+
+{% endblock content %}

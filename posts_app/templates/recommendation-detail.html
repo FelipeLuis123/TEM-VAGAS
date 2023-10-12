@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Detalhes da recomendação{% endblock %}
+{% block content %}
+	<div class="text-start">
+		<a class="btn btn-warning m-3" href="{% url 'recommendation-update' imovel.id %}">Atualizar</a>
+		<a class="btn btn-danger m-3" href="{% url 'recommendation-delete' imovel.id %}">Deletar</a> 
+		<div class="card h-100 text-bg-light">
+			<div class="card-body">
+				<h1>{{imovel.nome}}</h1>
+				<p>Criado em: {{imovel.create_at}}</p> 
+				<img src="{{imovel.image.url}}" width="300" alt="...">
+				<h3>R$ {{imovel.valor_aluguel}}</h3>
+				<p>Quartos: {{imovel.quantidade_quartos}}</p>
+				<p>Banheiros: {{imovel.quantidade_banheiros}}</p>
+				
+				<p>{{imovel.descricao}}</p>  
+				<p>Contato: {{imovel.telefone}}</p>
+			</div>
+		</div>	
+		{% comment %} <button class="m-3"><a href="{% url 'main-page' %}">Voltar</a></button> {% endcomment %}
+	</div>
+{% endblock content %}
