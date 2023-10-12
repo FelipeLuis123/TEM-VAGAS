@@ -74,7 +74,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Tem_Vagas.wsgi.application'
 
-AUTH_USER_MODEL = 'accounts.CustomUser'
+# AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

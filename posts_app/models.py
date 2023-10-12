@@ -1,6 +1,6 @@
 from django.db import models
 from django.dispatch import receiver
-from accounts.models import CustomUser
+#from accounts.models import CustomUser
 from django.db.models.signals import post_save
 
 # Create your models here.
@@ -29,18 +29,18 @@ class recomendacoes(models.Model):
         verbose_name_plural = 'Imoveis'
         ordering = ['id']
 
-class recomendacoes(models.Model):
-    user = models.OneToOneField(CustomUser, 
-						on_delete=models.CASCADE, related_name='profile')
-    description = models.CharField(max_length=100)
+# class recomendacoes(models.Model):
+#     user = models.OneToOneField(CustomUser, 
+# 						on_delete=models.CASCADE, related_name='profile')
+#     description = models.CharField(max_length=100)
 
 
-@receiver(post_save, sender=CustomUser)
-def my_handler(sender, **kwargs):
-    """
-    Quando Criar um usuário no Django, vai rodar essa função
-    para criar uma instancia nesse modelo MyProfile no campo "user".
-    """
-    if kwargs.get('created', False):
-        recomendacoes.objects.create(user=kwargs['instance'])
+# @receiver(post_save, sender=CustomUser)
+# def my_handler(sender, **kwargs):
+#     """
+#     Quando Criar um usuário no Django, vai rodar essa função
+#     para criar uma instancia nesse modelo MyProfile no campo "user".
+#     """
+#     if kwargs.get('created', False):
+#         recomendacoes.objects.create(user=kwargs['instance'])
        
