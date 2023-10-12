@@ -53,3 +53,6 @@ def recommendation_delete(request, id):
         messages.error(request, 'A recomendação foi excluida com sucesso') # quando deleta post 
         return HttpResponseRedirect(reverse('main-page')) # retorna rota post-list
     return render(request, 'recommendation-delete.html') # nesse template
+
+def mysite(request):
+    return render(request, 'main-page.html')
