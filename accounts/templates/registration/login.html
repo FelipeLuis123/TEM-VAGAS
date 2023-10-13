@@ -1,41 +1,41 @@
 {% comment %} {% extends 'base.html' %} {% endcomment %}
-{% load static %} 
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>{% block title %}Login{% endblock %}</title>
-				<!-- CSS -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Login{% endblock %}</title>
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
-{% block content %}
-
-<div class="col-md-4">
-    <form method="post">
-        {% csrf_token %}
-        <div class="container">
-            <div class="row justify-content-center mt-5">
-            <div class="card h-100 text-bg-light p-3 ">
+<body>
+    {% block content %}
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-4">
+                <div class="card h-100 text-bg-light p-3">
                     <h3>Entrar</h3>
-                    <div class="mb-3">
-                        <label class="form-label" for="id_username">Usuário:</label>
-                        <input type="text" name="username" class="form-control">
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label class="form-label" for="id_password">Senha:</label>
-                        <input type="password" name="password" class="form-control">
-                    </div>
-
-                    <button class="btn btn-danger" type="submit">Entrar</button>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label" for="id_username">Usuário:</label>
+                            <input type="text" name="username" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="id_password">Senha:</label>
+                            <input type="password" name="password" class="form-control">
+                        </div>
+                        <button class="btn btn-danger" type="submit">Entrar</button>
+                        <a class="text-center" href="{% url 'password_reset' %}">Esqueci minha senha</a>
+                    </form>
+                    <button class="btn btn-warning mt-3"><a href="{% url 'register' %}">Registrar</a></button>
                 </div>
             </div>
         </div>
-    </form>
-    
-    <a href="{% url 'password_reset' %}">Esqueci minha senha</a>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-{% endblock %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    {% endblock %}
+</body>
+</html>
