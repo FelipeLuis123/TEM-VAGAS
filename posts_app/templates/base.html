@@ -15,7 +15,7 @@
 		<div class="container">
 			<div class="container p-5">
 				{% if user.is_authenticated %}
-					<h1>Olá, {{user.username}}</h1>  
+					{% comment %} <h1>Seja Bem vindo, {{user.username}}</h1>   {% endcomment %}
 				{% endif %} 
 				{% block content %} 
 				{% endblock %} 

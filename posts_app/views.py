@@ -21,7 +21,7 @@ def create_recommendation(request):
             form = form.save(commit=False)
             form.save() # salva
             
-            messages.SUCCESS(request, 'A recomendação foi criada com sucesso') # mensagem quando cria o post
+            messages.success(request, 'A recomendação foi criada com sucesso') # mensagem quando cria o post
             return HttpResponseRedirect(reverse('main-page')) # coloquei para retornar post-list
         
     form = RecommendationForm() # senão carrega o formulario  

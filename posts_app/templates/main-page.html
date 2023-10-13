@@ -13,10 +13,12 @@
 				<div class="card h-100 text-bg-light">
 					<img src="{{imovel.image.url}}" class="card-img-top" alt="...">
 					<div class="card-body">
-						<h3>R$ {{imovel.valor_aluguel}}</h3>
-						<p>Quartos: {{imovel.quantidade_quartos}}</p>
-						<p>Banheiros: {{imovel.quantidade_banheiros}}</p>	
-						<a class="btn btn-info" href="{% url 'recommendation-detail' imovel.id %}">Ver+</a> 
+						<h3 class="text-center">R$ {{imovel.valor_aluguel}}</h3>
+						<p class="text-center">Quartos: {{imovel.quantidade_quartos}}</p>
+						<p class="text-center">Banheiros: {{imovel.quantidade_banheiros}}</p>	
+						<div class="text-center">
+							<a class="btn btn-info" href="{% url 'recommendation-detail' imovel.id %}">Ver+</a>
+						</div> 
 					</div>
 				</div>
 			</div>

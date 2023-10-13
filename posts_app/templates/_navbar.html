@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary bg-black">
+<nav class="navbar navbar-expand-lg bg-body-tertiary bg-primary">
   <div class="container-fluid">
       <a class="navbar-brand text-light" href="#">Tem Vagas</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,17 +23,17 @@
           </ul>
           <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="Buscar imóveis..." aria-label="Search">
-              <button class="btn btn-outline-success mx-3" type="submit">Pesquisar</button>
+              <button class="btn btn-success mx-3" type="submit">Pesquisar</button>
           </form>
           <div class="d-flex gap-3 align-items-center">
               {% if user.is_authenticated %}
-                  <span class="nav-text bg-light">
+                  {% comment %} <span class="nav-text bg-light">
                       {{ user.username }}
-                  </span>
+                  </span> {% endcomment %}
                   {% comment %}
                   <a class="btn btn-outline-danger" href="{% url 'logout' %}">Sair</a>
                   {% endcomment %}
-                  <a class="btn btn-outline-danger" id="logoutButton" href="#">Sair</a>
+                  <a class="btn btn-outline-danger" id="logoutButton" href="">Sair</a>
                   <script>
                       document.getElementById('logoutButton').addEventListener('click', function(event) {
                           event.preventDefault();
