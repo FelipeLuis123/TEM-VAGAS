@@ -21,6 +21,7 @@ class recomendacoes(models.Model):
     descricao = models.TextField()  # "Descricao" should be lowercase "descricao"
     image = models.ImageField(upload_to='images/', blank=True, null=True)  
     create_at = models.DateTimeField(auto_now_add=True) 
+    #disponivel
 
     def __str__(self):
         return self.nome  # retornando o nome para representação da string do objeto

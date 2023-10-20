@@ -7,6 +7,7 @@ from posts_app.forms import RecommendationForm
 
 # Create your views here.
 def destaques(request):
+    # usuarioLogado(request)
     template_name = 'main-page.html' # template
     posts = recomendacoes.objects.all() # query com todas as postagens
     context = { # cria context para chamar no template
@@ -15,6 +16,7 @@ def destaques(request):
     return render(request, template_name, context) # render
 
 def create_recommendation(request):
+    # usuarioLogado(request)
     if request.method == 'POST': # para metodo POST
         form = RecommendationForm(request.POST, request.FILES) # pega as informações do form
         if form.is_valid(): # se for valido
@@ -28,6 +30,7 @@ def create_recommendation(request):
     return render(request, 'recommendation-form.html', {"form": form}) # nesse template
 
 def recommendation_detail(request, id):
+    # usuarioLogado(request)
     template_name = 'recommendation-detail.html' # template
     post = recomendacoes.objects.get(id=id) # Metodo Get
     context = { # cria context para chamar no template
@@ -36,6 +39,7 @@ def recommendation_detail(request, id):
     return render(request, template_name, context) # render
 
 def recommendation_update(request, id):
+    # usuarioLogado(request)
     post = get_object_or_404(recomendacoes, id=id) # id do post
     form = RecommendationForm(request.POST or None, request.FILES or None, instance=post) # pega as informações do form
     if form.is_valid(): # se for valido
@@ -47,6 +51,7 @@ def recommendation_update(request, id):
     return render(request, 'recommendation-form.html', {"form": form}) # nesse template
 
 def recommendation_delete(request, id): 
+    # usuarioLogado(request)
     post = recomendacoes.objects.get(id=id) # pelo ID pega o objeto
     if request.method == 'POST':         
         post.delete()
@@ -55,4 +60,16 @@ def recommendation_delete(request, id):
     return render(request, 'recommendation-delete.html') # nesse template
 
 def mysite(request):
+    # usuarioLogado(request)
     return render(request, 'main-page.html')
+
+
+# def usuarioLogado(request):
+#     print('Logado')
+#     if request.user.is_authenticated:
+#         print('Authenticated')
+#         render(request, "main-page.html") 
+#         return 200 
+#     else:
+#         render(request, "accounts/templetes/login.html")
+#         return 401
