@@ -27,10 +27,11 @@
                             <label class="form-label" for="id_password">Senha:</label>
                             <input type="password" name="password" class="form-control">
                         </div>
-                        <button class="btn btn-success" type="submit">Entrar</button>
+                        <button class="btn btn-warning mb-3" type="submit"><a href="{% url 'register' %}" class="text-decoration-none">Registrar</a></button>
                         <a class="text-center" href="{% url 'password_reset' %}">Esqueci minha senha</a>
+                        <br>
+                        <button class="btn btn-success w-100" type="submit">Entrar</button>                   
                     </form>
-                    <button class="btn btn-warning mt-3" type="submit"><a href="{% url 'register' %}" class="text-decoration-none">Registrar</a></button>
                 </div>
             </div>
         </div>
