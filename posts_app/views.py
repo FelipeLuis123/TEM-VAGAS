@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from posts_app.forms import RecommendationForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def destaques(request):
@@ -15,6 +16,7 @@ def destaques(request):
         }
     return render(request, template_name, context) # render
 
+@login_required
 def create_recommendation(request):
     if request.method == 'POST':
         form = RecommendationForm(request.POST, request.FILES)
@@ -30,6 +32,7 @@ def create_recommendation(request):
         form = RecommendationForm()  # Inicializa o formulário para ser apresentado na página
 
     return render(request, 'recommendation-form.html', {"form": form})
+
 def recommendation_detail(request, id):
     # usuarioLogado(request)
     template_name = 'recommendation-detail.html' # template
