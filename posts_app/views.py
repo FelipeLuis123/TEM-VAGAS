@@ -1,8 +1,8 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from posts_app.models import recomendacoes
 from django.contrib import messages
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseForbidden, HttpResponseRedirect
 from posts_app.forms import RecommendationForm
 
 # Create your views here.
@@ -16,19 +16,20 @@ def destaques(request):
     return render(request, template_name, context) # render
 
 def create_recommendation(request):
-    # usuarioLogado(request)
-    if request.method == 'POST': # para metodo POST
-        form = RecommendationForm(request.POST, request.FILES) # pega as informações do form
-        if form.is_valid(): # se for valido
-            form = form.save(commit=False)
-            form.save() # salva
-            
-            messages.success(request, 'A recomendação foi criada com sucesso') # mensagem quando cria o post
-            return HttpResponseRedirect(reverse('main-page')) # coloquei para retornar post-list
-        
-    form = RecommendationForm() # senão carrega o formulario  
-    return render(request, 'recommendation-form.html', {"form": form}) # nesse template
+    if request.method == 'POST':
+        form = RecommendationForm(request.POST, request.FILES)
+        if form.is_valid():
+            recommendation = form.save(commit=False)  # Cria instância, mas não salva no banco de dados ainda
+            recommendation.owner = request.user  # associando o usuário logado como o proprietário
+            recommendation.save()  # Salva a instância no banco de dados
 
+            messages.success(request, 'A recomendação foi criada com sucesso')
+            return redirect('main-page')  # Utilizando redirect ao invés de HttpResponseRedirect
+
+    else:
+        form = RecommendationForm()  # Inicializa o formulário para ser apresentado na página
+
+    return render(request, 'recommendation-form.html', {"form": form})
 def recommendation_detail(request, id):
     # usuarioLogado(request)
     template_name = 'recommendation-detail.html' # template
@@ -39,25 +40,37 @@ def recommendation_detail(request, id):
     return render(request, template_name, context) # render
 
 def recommendation_update(request, id):
-    # usuarioLogado(request)
-    post = get_object_or_404(recomendacoes, id=id) # id do post
-    form = RecommendationForm(request.POST or None, request.FILES or None, instance=post) # pega as informações do form
-    if form.is_valid(): # se for valido
-        form.save() # salva
-        
-        messages.warning(request, 'A recomendação foi atualizada com sucesso') # mensagem quando cria o post
-        return HttpResponseRedirect(reverse('recommendation-detail', args=[post.id])) # coloquei para retornar post-list
-         
-    return render(request, 'recommendation-form.html', {"form": form}) # nesse template
+    recommendation = get_object_or_404(recomendacoes, id=id)
+    
+    # Verificar se o usuário logado é o proprietário da recomendação
+    if request.user != recommendation.owner:
+        return HttpResponseForbidden('Você não tem permissão para editar esta recomendação.')
 
-def recommendation_delete(request, id): 
-    # usuarioLogado(request)
-    post = recomendacoes.objects.get(id=id) # pelo ID pega o objeto
+    if request.method == 'POST':
+        form = RecommendationForm(request.POST, request.FILES, instance=recommendation)
+        if form.is_valid():
+            form.save()
+            
+            messages.warning(request, 'A recomendação foi atualizada com sucesso')
+            return HttpResponseRedirect(reverse('recommendation-detail', args=[recommendation.id]))
+
+    form = RecommendationForm(instance=recommendation)
+    return render(request, 'recommendation-form.html', {"form": form})
+
+def recommendation_delete(request, id):
+    recommendation = get_object_or_404(recomendacoes, id=id)
+
+    # Verificar se o usuário logado é o proprietário da recomendação
+    if request.user != recommendation.owner:
+        return HttpResponseForbidden('Você não tem permissão para excluir esta recomendação.')
+
     if request.method == 'POST':         
-        post.delete()
-        messages.error(request, 'A recomendação foi excluida com sucesso') # quando deleta post 
-        return HttpResponseRedirect(reverse('main-page')) # retorna rota post-list
-    return render(request, 'recommendation-delete.html') # nesse template
+        recommendation.delete()
+        
+        messages.error(request, 'A recomendação foi excluída com sucesso')
+        return HttpResponseRedirect(reverse('main-page'))
+
+    return render(request, 'recommendation-delete.html')
 
 def mysite(request):
     # usuarioLogado(request)

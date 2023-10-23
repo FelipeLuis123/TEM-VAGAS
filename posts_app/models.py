@@ -22,6 +22,8 @@ class recomendacoes(models.Model):
     image = models.ImageField(upload_to='images/', blank=True, null=True)  
     create_at = models.DateTimeField(auto_now_add=True) 
     #disponivel
+    owner = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, null=True)
+
 
     def __str__(self):
         return self.nome  # retornando o nome para representação da string do objeto

@@ -2,8 +2,10 @@
 {% block title %}Detalhes da recomendação{% endblock %}
 {% block content %}
 <div class="text-start">
+    {% if imovel.owner == request.user %}
     <a class="btn btn-warning m-3" href="{% url 'recommendation-update' imovel.id %}">Atualizar</a>
-    <a class="btn btn-danger m-3" href="{% url 'recommendation-delete' imovel.id %}">Deletar</a> 
+    <a class="btn btn-danger m-3" href="{% url 'recommendation-delete' imovel.id %}">Deletar</a>
+{% endif %}
     <div class="card h-100 text-bg-light">
         <div class="card-body">
             <div class="row">

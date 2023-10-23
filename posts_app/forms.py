@@ -3,10 +3,11 @@ from .models import recomendacoes
 
 class RecommendationForm(forms.ModelForm):
     class Meta:
-        model = recomendacoes # nosso modelo
-        fields = '__all__'
+        model = recomendacoes
+        exclude = ['owner']  # Exclua o campo owner do formulário
 
-    def __init__(self, *args, **kwargs): # Adiciona 
-            super().__init__(*args, **kwargs)  
-            for field_name, field in self.fields.items():   
-                field.widget.attrs['class'] = 'form-control'        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+     
