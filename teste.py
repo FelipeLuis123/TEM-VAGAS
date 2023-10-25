@@ -50,5 +50,5 @@ class DatabaseManager:
 db_manager = DatabaseManager()
 # db_manager.cadastrar_usuario(
 #     'a', 'a', 'John', 'Doe', 'johndoe@example.com', 12345)
-user = db_manager.login('1', 'a')
+user = db_manager.login('a', 'a')
 print(user)
