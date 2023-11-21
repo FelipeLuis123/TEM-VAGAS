@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from posts_app.forms import RecommendationForm
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 # Create your views here.
 def destaques(request):
@@ -79,6 +80,35 @@ def mysite(request):
     # usuarioLogado(request)
     return render(request, 'main-page.html')
 
+@login_required
+def listar_recomendacoes(request):
+    # Recupere o usuário logado
+    usuario_logado = request.user
+
+    # Recupere todas as recomendações feitas pelo usuário
+    recomendacoes_do_usuario = recomendacoes.objects.filter(owner=usuario_logado)
+
+    # Passe as recomendações para o template
+    context = {'recomendacoes': recomendacoes_do_usuario}
+    return render(request, 'listar_recomendacoes.html', context)
+
+
+@login_required
+def curtir_recomendacao(request, id):
+    recomendacao = get_object_or_404(recomendacoes, id=id)
+
+    # Verificar se o usuário já curtiu a recomendação
+    if request.user in recomendacao.curtidas.all():
+        recomendacao.curtidas.remove(request.user)
+        mensagem = 'Curtida removida'
+    else:
+        recomendacao.curtidas.add(request.user)
+        mensagem = 'Recomendação curtida'
+
+    # Retornar uma resposta JSON indicando o número atual de curtidas
+    numero_curtidas = recomendacao.curtidas.count()
+    data = {'mensagem': mensagem, 'numero_curtidas': numero_curtidas}
+    return JsonResponse(data)
 
 # def usuarioLogado(request):
 #     print('Logado')

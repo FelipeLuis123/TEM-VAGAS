@@ -3,7 +3,6 @@ from django.dispatch import receiver
 from accounts.models import CustomUser
 from django.db.models.signals import post_save
 
-# Create your models here.
 class recomendacoes(models.Model):
     nome = models.CharField(max_length=100)
     telefone = models.IntegerField()
@@ -17,34 +16,39 @@ class recomendacoes(models.Model):
     cep = models.IntegerField()
     valor_aluguel = models.IntegerField()
     quantidade_quartos = models.IntegerField()
-    quantidade_banheiros = models.IntegerField()  # Use IntegerField for quantity fields
-    descricao = models.TextField()  # "Descricao" should be lowercase "descricao"
+    quantidade_banheiros = models.IntegerField()
+    descricao = models.TextField()
     image = models.ImageField(upload_to='images/', blank=True, null=True)  
     create_at = models.DateTimeField(auto_now_add=True) 
-    #disponivel
     owner = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, null=True)
-
-
-    def __str__(self):
-        return self.nome  # retornando o nome para representação da string do objeto
+    curtidas = models.ManyToManyField(CustomUser, through='Curtida', related_name='curtidas')
+    
+    def _str_(self):
+        return self.nome
     
     class Meta:
         verbose_name = 'Imovel'
         verbose_name_plural = 'Imoveis'
         ordering = ['id']
 
-class Myprofile(models.Model):
-    user = models.OneToOneField(CustomUser, 
-						on_delete=models.CASCADE, related_name='profile')
-    description = models.CharField(max_length=100)
+class Curtida(models.Model):
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    recomendacao = models.ForeignKey(recomendacoes, on_delete=models.CASCADE)
+    data_criacao = models.DateTimeField(auto_now_add=True)
 
+    def _str_(self):
+        return f'Curtida de {self.usuario.username} em {self.recomendacao.nome}'
+
+class Myprofile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
+    description = models.CharField(max_length=100)
 
 @receiver(post_save, sender=CustomUser)
 def my_handler(sender, **kwargs):
-    """
-    Quando Criar um usuário no Django, vai rodar essa função
-    para criar uma instancia nesse modelo MyProfile no campo "user".
-    """
     if kwargs.get('created', False):
         Myprofile.objects.create(user=kwargs['instance'])
        
+@receiver(post_save, sender=recomendacoes)
+def create_curtida_on_recomendacao_creation(sender, instance, created, **kwargs):
+    if created:
+        Curtida.objects.create(usuario=instance.owner, recomendacao=instance)

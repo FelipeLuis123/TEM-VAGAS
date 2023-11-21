@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Minhas Recomendações{% endblock %}
+
+{% block content %}
+<div class="text-start">
+  <h2>Minhas Recomendações</h2>
+
+  {% if recomendacoes %}
+    <ul class="list-group">
+      {% for recomendacao in recomendacoes %}
+        <li class="list-group-item">
+          <a href="{% url 'recommendation-detail' recomendacao.id %}">
+            <h3>{{ recomendacao.nome }}</h3>
+          </a>
+          <p>Endereço: {{ recomendacao.endereco }}</p>
+          <p>Valor Aluguel: R$ {{ recomendacao.valor_aluguel }}</p>
+          <p>Quantidade de Quartos: {{ recomendacao.quantidade_quartos }}</p>
+          <!-- Adicione outros campos conforme necessário -->
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Você ainda não fez nenhuma recomendação.</p>
+  {% endif %}
+  
+</div>
+{% endblock content%}

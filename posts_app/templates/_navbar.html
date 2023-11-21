@@ -14,7 +14,7 @@
                   <a class="nav-link text-light" href="{% url 'create-recommendation' %}">Recomende aqui</a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link active text-light" aria-current="page" href="#">Minhas Recomendações</a>
+                  <a class="nav-link active text-light" aria-current="page" href="listar-recomendacoes">Minhas Recomendações</a>
               </li>
               {% comment %}
               <li class="nav-item">
@@ -22,10 +22,19 @@
               </li>
               {% endcomment %}
           </ul>
-          <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Buscar imóveis..." aria-label="Search">
-              <button class="btn btn-success mx-3" type="submit">Pesquisar</button>
-          </form>
+          <form class="d-flex">
+            <div class="input-group bg-secondary"> <!-- Adicione a classe "bg-secondary" para tornar o fundo cinza -->
+                <input class="form-control" type="search" placeholder="Encontre imóveis..." aria-label="Search">
+                <button class="btn btn-success" type="submit">
+                    <i class="bi bi-search" aria-hidden="true"></i>
+                    <img src="{% static 'images/lupa.png' %}" alt="Lupa" width="30">
+                </button>
+            </div>
+        </form>
+        
+    
+        
+        
           <div class="d-flex gap-3 align-items-center">
               {% if user.is_authenticated %}
                   {% comment %} <span class="nav-text bg-light">

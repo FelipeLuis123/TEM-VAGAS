@@ -1,40 +1,42 @@
+<!-- No seu template recommendation-detail.html -->
 {% extends 'base.html' %}
-{% block title %}Detalhes da recomendação{% endblock %}
+
+{% block title %}Detalhes da Recomendação - {{ imovel.nome }}{% endblock %}
+
 {% block content %}
-<div class="text-start">
-    {% if imovel.owner == request.user %}
-    <a class="btn btn-warning m-3" href="{% url 'recommendation-update' imovel.id %}">Atualizar</a>
-    <a class="btn btn-danger m-3" href="{% url 'recommendation-delete' imovel.id %}">Deletar</a>
-{% endif %}
-    <div class="card h-100 text-bg-light">
-        <div class="card-body">
-            <div class="row">
-                <!-- Conteúdo do lado esquerdo -->
-                <div class="col-md-6">
-                    <div class="text-center">
-						<img src="{{imovel.image.url}}" width="350" alt="...">
-					</div>					
-					<figcaption class="figcaption text-center"><h3>{{imovel.nome}}</h3></figcaption>
-                    {% comment %} <p class="text-center">Criado em: {{imovel.create_at}}</p> {% endcomment %}
-					<p class="text-center">Contato: {{imovel.telefone}}</p>
-                </div>
-                <!-- Conteúdo do lado direito -->
-                <div class="col-md-6">
-                    <h3 class="lh-1 fw-bold">R$ {{imovel.valor_aluguel}}</h3>
-					<p class="lh-1 ">Endereço: {{imovel.endereco}}</p>
-					<p class="lh-1 ">Bairro: {{imovel.bairro}}</p>
-					<p class="lh-1 ">Cidade: {{imovel.cidade}}</p>
-					<p class="lh-1 ">Estado: {{imovel.estado}}</p>
-					<p class="lh-1 ">CEP: {{imovel.cep}}</p>
-					<p class="lh-1 ">Logradouro: {{imovel.logradouro}}</p>
-                    <p class="lh-1">Quartos: {{imovel.quantidade_quartos}}</p>
-                    <p class="lh-1">Banheiros: {{imovel.quantidade_banheiros}}</p>
-                    <p class="overflow-y-auto">Descrição{{imovel.descricao}}</p>  
+    <div class="text-start">
+        {% if imovel.owner == request.user %}
+            <a class="btn btn-warning m-3" href="{% url 'recommendation-update' imovel.id %}">Atualizar</a>
+            <a class="btn btn-danger m-3" href="{% url 'recommendation-delete' imovel.id %}">Deletar</a>
+        {% endif %}
+        <div class="card h-100 text-bg-light">
+            <div class="card-body">
+                <div class="row">
+                    <!-- Conteúdo do lado esquerdo -->
+                    <div class="col-md-6">
+                        <div class="text-center">
+                            <img src="{{imovel.image.url}}" width="350" alt="...">
+                        </div>                  
+                        <figcaption class="figcaption text-center"><h3>{{imovel.nome}}</h3></figcaption>
+                        {% comment %} <p class="text-center">Criado em: {{imovel.create_at}}</p> {% endcomment %}
+                        <p class="text-center">Contato: {{imovel.telefone}}</p>
+                        <p>Quantidade de Curtidas: <span id="numero_curtidas_{{ imovel.id }}">{{ imovel.curtidas.count }}</span></p>
+                    </div>
+                    <!-- Conteúdo do lado direito -->
+                    <div class="col-md-6">
+                        <h3 class="lh-1 fw-bold">R$ {{imovel.valor_aluguel}}</h3>
+                        <p class="lh-1 ">Endereço: {{imovel.endereco}}</p>
+                        <p class="lh-1 ">Bairro: {{imovel.bairro}}</p>
+                        <p class="lh-1 ">Cidade: {{imovel.cidade}}</p>
+                        <p class="lh-1 ">Estado: {{imovel.estado}}</p>
+                        <p class="lh-1 ">CEP: {{imovel.cep}}</p>
+                        <p class="lh-1 ">Logradouro: {{imovel.logradouro}}</p>
+                        <p class="lh-1">Quartos: {{imovel.quantidade_quartos}}</p>
+                        <p class="lh-1">Banheiros: {{imovel.quantidade_banheiros}}</p>
+                        <p class="overflow-y-auto">Descrição{{imovel.descricao}}</p>                         
+                    </div>
                 </div>
             </div>
-        </div>
+        </div>     
     </div>
-    {% comment %} <button class="m-3"><a href="{% url 'main-page' %}">Voltar</a></button> {% endcomment %}
-</div>
-{% endblock content %}
-
+{% endblock %}
