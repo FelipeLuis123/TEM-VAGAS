@@ -26,6 +26,7 @@ class recomendacoes(models.Model):
     def _str_(self):
         return self.nome
     
+    
     class Meta:
         verbose_name = 'Imovel'
         verbose_name_plural = 'Imoveis'
