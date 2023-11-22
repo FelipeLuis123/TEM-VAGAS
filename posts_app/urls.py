@@ -9,4 +9,5 @@ urlpatterns = [
     path('recommendation-delete/<int:id>/', views.recommendation_delete, name='recommendation-delete'),
     path('listar-recomendacoes/', views.listar_recomendacoes, name='listar-recomendacoes'),
     path('curtir_recomendacao/<int:id>/', views.curtir_recomendacao, name='curtir_recomendacao'),
+    path('buscar-recomendacoes/', views.buscar_recomendacoes, name='buscar-recomendacoes'),
 ]

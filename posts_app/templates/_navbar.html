@@ -22,9 +22,9 @@
               </li>
               {% endcomment %}
           </ul>
-          <form class="d-flex">
-            <div class="input-group bg-secondary"> <!-- Adicione a classe "bg-secondary" para tornar o fundo cinza -->
-                <input class="form-control" type="search" placeholder="Encontre imóveis..." aria-label="Search">
+          <form class="d-flex" method="GET" action="{% url 'buscar-recomendacoes' %}">
+            <div class="input-group bg-secondary">
+                <input class="form-control" type="search" name="q" placeholder="Encontre imóveis..." aria-label="Search">
                 <button class="btn btn-success" type="submit">
                     <i class="bi bi-search" aria-hidden="true"></i>
                     <img src="{% static 'images/lupa.png' %}" alt="Lupa" width="30">

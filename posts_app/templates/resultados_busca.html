@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Residências disponíveis para alocar ou dividir aluguel - Tem Vagas{% endblock %}
+
+{% block content %}
+    {% load static %}  {# Certifique-se de que esta linha esteja presente #}
+    <hr>
+
+    <h5>Recomendações em Destaque</h5>
+    <br>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for imovel in resultados %}
+            <div class="col">
+                <div class="card h-100 text-bg-light">
+                    <!-- Imagem do Imóvel -->
+                    <img src="{% if imovel.image and imovel.image.url %}{{ imovel.image.url }}{% else %}{% static 'caminho/do/seu/placeholder.jpg' %}{% endif %}" class="card-img-top" alt="Imagem do Imóvel">
+
+                    <div class="card-body">
+                        <!-- Detalhes do Imóvel -->
+                        <h3 class="text-center">R$ {{ imovel.valor_aluguel }}</h3>
+                        <p class="text-center">Quartos: {{ imovel.quantidade_quartos }}</p>
+                        <p class="text-center">Banheiros: {{ imovel.quantidade_banheiros }}</p>
+
+                        <div class="text-center">
+                            <!-- Link para Detalhes -->
+                            <a class="btn btn-info" href="{% url 'recommendation-detail' imovel.id %}">Ver+</a>
+
+                            <!-- Botão de Curtir -->
+                            {% if request.user in imovel.curtidas.all %}
+                                <button class="btn btn-light curtir-btn" data-recomendacao-id="{{ imovel.id }}" data-curtida="true">
+                                    <img src="{% static 'images/curtidavermelha.png' %}" alt="Curtir" width="30">
+                                </button>
+                            {% else %}
+                                <button class="btn btn-light curtir-btn" data-recomendacao-id="{{ imovel.id }}" data-curtida="false">
+                                    <img src="{% static 'images/curtidanormal.png' %}" alt="Curtir" width="30">
+                                </button>
+                            {% endif %}
+
+                            <!-- Contagem de Curtidas -->
+                            <p>Quantidade de Curtidas: <span id="numero_curtidas_{{ imovel.id }}">{{ imovel.curtidas.count }}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Adicione esta linha no cabeçalho do seu template para incluir o jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        $('.curtir-btn').on('click', function () {
+            var btn = $(this);
+            var recomendacaoId = btn.data('recomendacao-id');
+            var curtidaStatus = btn.data('curtida');
+
+            $.ajax({
+                url: /curtir_recomendacao/${recomendacaoId}/,
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Atualizar a contagem de curtidas na interface do usuário
+                    $('#numero_curtidas_' + recomendacaoId).text(data.numero_curtidas);
+
+                    // Alterar o status de curtida no botão
+                    btn.data('curtida', !curtidaStatus);
+
+                    // Alterar a imagem do botão com base no novo status
+                    if (!curtidaStatus) {
+                        btn.find('img').attr('src', '{% static "images/curtidavermelha.png" %}');
+                    } else {
+                        btn.find('img').attr('src', '{% static "images/curtidanormal.png" %}');
+                    }
+                },
+                error: function (error) {
+                    console.error('Erro na solicitação AJAX:', error);
+                }
+            });
+        });
+    </script>
+
+{% endblock content %}

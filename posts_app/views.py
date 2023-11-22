@@ -6,6 +6,7 @@ from django.http import HttpResponseForbidden, HttpResponseRedirect
 from posts_app.forms import RecommendationForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.db.models import Q
 
 # Create your views here.
 def destaques(request):
@@ -110,6 +111,28 @@ def curtir_recomendacao(request, id):
     data = {'mensagem': mensagem, 'numero_curtidas': numero_curtidas}
     return JsonResponse(data)
 
+
+
+def buscar_recomendacoes(request):
+    query = request.GET.get('q')
+
+    if query:
+        resultados = recomendacoes.objects.filter(
+            Q(bairro__icontains=query) |  # Substitua 'descricao' pelo campo correto
+            Q(endereco__icontains=query)  # Adicione outros campos se necessário
+            
+            # Adicione mais condições se necessário
+        ).distinct()
+
+        context = {
+            'query': query,
+            'resultados': resultados
+        }
+
+        return render(request, 'resultados_busca.html', context)
+    else:
+        return render(request, 'resultados_busca.html', {'resultados': None})
+
 # def usuarioLogado(request):
 #     print('Logado')
 #     if request.user.is_authenticated:
@@ -119,3 +142,40 @@ def curtir_recomendacao(request, id):
 #     else:
 #         render(request, "accounts/templetes/login.html")
 #         return 401
+
+#filtragem por palavras similares que estão dando erro ainda
+#def buscar_recomendacoes(request):
+    #     query = request.GET.get('q', '')
+    
+#     if query:
+#         campos_busca = ['bairro', 'endereco', 'logradouro', 'cep', 'cidade']
+
+#         resultados_combinados = []
+
+
+#         for campo in campos_busca:
+#             resultados = []
+#             for instance in recomendacoes.objects.all():
+#                 campo_value = str(getattr(instance, campo))  # Convert to string
+#                 matches = find_near_matches(query, campo_value, max_l_dist=2)
+#                 if matches:
+#                     resultados.append((instance, matches[0].start, matches[0].end))
+
+#             # Ordena os resultados com base na posição da correspondência
+#             resultados.sort(key=lambda x: x[1])
+
+#             for result, _, _ in resultados:
+#                 resultados_combinados.append(result)
+
+#         # Remove duplicatas
+#         resultados_combinados = list(set(resultados_combinados))
+
+#         context = {
+#             'query': query,
+#             'resultados': resultados_combinados
+#         }
+
+#         return render(request, 'resultados_busca.html', context)
+#     else:
+#         return render(request, 'resultados_busca.html', {'resultados': None})
+#sei la
