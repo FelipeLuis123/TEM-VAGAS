@@ -23,7 +23,7 @@ class recomendacoes(models.Model):
     owner = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, null=True)
     curtidas = models.ManyToManyField(CustomUser, through='Curtida', related_name='curtidas')
     
-    def _str_(self):
+    def str(self):
         return self.nome
     
     
@@ -37,7 +37,7 @@ class Curtida(models.Model):
     recomendacao = models.ForeignKey(recomendacoes, on_delete=models.CASCADE)
     data_criacao = models.DateTimeField(auto_now_add=True)
 
-    def _str_(self):
+    def str(self):
         return f'Curtida de {self.usuario.username} em {self.recomendacao.nome}'
 
 class Myprofile(models.Model):
@@ -53,3 +53,12 @@ def my_handler(sender, **kwargs):
 def create_curtida_on_recomendacao_creation(sender, instance, created, **kwargs):
     if created:
         Curtida.objects.create(usuario=instance.owner, recomendacao=instance)
+        
+class Comentario(models.Model):
+    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    recomendacao = models.ForeignKey(recomendacoes, on_delete=models.CASCADE, related_name='comentarios')
+    texto = models.TextField()
+    data_criacao = models.DateTimeField(auto_now_add=True)
+
+    def _str_(self):
+        return f'Comentário de {self.usuario.username} em {self.recomendacao.nome}'

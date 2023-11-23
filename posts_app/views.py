@@ -7,16 +7,18 @@ from posts_app.forms import RecommendationForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import Q
+from .forms import ComentarioForm  # Certifique-se de importar o formulário de comentário
+from django.shortcuts import get_object_or_404, render, redirect
+from .models import Comentario
 
-# Create your views here.
 def destaques(request):
     # usuarioLogado(request)
-    template_name = 'main-page.html' # template
-    posts = recomendacoes.objects.all() # query com todas as postagens
-    context = { # cria context para chamar no template
-        'imovel': posts # o primeiro 'posts' é o nome como ele vai ser chamado no html.
-        }
-    return render(request, template_name, context) # render
+    template_name = 'main-page.html'  # template
+    posts = recomendacoes.objects.all()  # query com todas as postagens
+    context = {  # cria context para chamar no template
+        'imovel': posts  # o primeiro 'posts' é o nome como ele vai ser chamado no html.
+    }
+    return render(request, template_name, context)  # render
 
 @login_required
 def create_recommendation(request):
@@ -29,7 +31,6 @@ def create_recommendation(request):
 
             messages.success(request, 'A recomendação foi criada com sucesso')
             return redirect('main-page')  # Utilizando redirect ao invés de HttpResponseRedirect
-
     else:
         form = RecommendationForm()  # Inicializa o formulário para ser apresentado na página
 
@@ -37,12 +38,12 @@ def create_recommendation(request):
 
 def recommendation_detail(request, id):
     # usuarioLogado(request)
-    template_name = 'recommendation-detail.html' # template
-    post = recomendacoes.objects.get(id=id) # Metodo Get
-    context = { # cria context para chamar no template
+    template_name = 'recommendation-detail.html'  # template
+    post = recomendacoes.objects.get(id=id)  # Metodo Get
+    context = {  # cria context para chamar no template
         'imovel': post
-        }
-    return render(request, template_name, context) # render
+    }
+    return render(request, template_name, context)  # render
 
 def recommendation_update(request, id):
     recommendation = get_object_or_404(recomendacoes, id=id)
@@ -93,7 +94,6 @@ def listar_recomendacoes(request):
     context = {'recomendacoes': recomendacoes_do_usuario}
     return render(request, 'listar_recomendacoes.html', context)
 
-
 @login_required
 def curtir_recomendacao(request, id):
     recomendacao = get_object_or_404(recomendacoes, id=id)
@@ -110,8 +110,6 @@ def curtir_recomendacao(request, id):
     numero_curtidas = recomendacao.curtidas.count()
     data = {'mensagem': mensagem, 'numero_curtidas': numero_curtidas}
     return JsonResponse(data)
-
-
 
 def buscar_recomendacoes(request):
     query = request.GET.get('q')
@@ -133,6 +131,63 @@ def buscar_recomendacoes(request):
     else:
         return render(request, 'resultados_busca.html', {'resultados': None})
 
+def adicionar_comentario(request, id):
+    imovel = get_object_or_404(recomendacoes, id=id)
+
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.usuario = request.user
+            comentario.recomendacao = imovel
+            comentario.save()
+            messages.success(request, 'Comentário adicionado com sucesso.')
+            
+            # Modificação aqui - redirecionar para recommendation-detail
+            return HttpResponseRedirect(reverse('recommendation-detail', kwargs={'id': imovel.id}))
+
+    else:
+        form = ComentarioForm()
+
+    return render(request, 'adicionar_comentario.html', {'form': form, 'imovel': imovel})
+
+@login_required
+def editar_comentario(request, comentario_id):
+    comentario = get_object_or_404(Comentario, id=comentario_id)
+
+    # Verificar se o usuário logado é o autor do comentário
+    if request.user != comentario.usuario:
+        messages.error(request, 'Você não tem permissão para editar este comentário.')
+        return redirect('recommendation-detail', id=comentario.recomendacao.id)
+
+    if request.method == 'POST':
+        form = ComentarioForm(request.POST, instance=comentario)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Comentário editado com sucesso.')
+            return redirect('recommendation-detail', id=comentario.recomendacao.id)
+    else:
+        form = ComentarioForm(instance=comentario)
+
+    return render(request, 'editar_comentario.html', {'form': form, 'comentario': comentario})
+
+@login_required
+def excluir_comentario(request, comentario_id):
+    comentario = get_object_or_404(Comentario, id=comentario_id)
+
+    # Verificar se o usuário logado é o autor do comentário
+    if request.user != comentario.usuario:
+        messages.error(request, 'Você não tem permissão para excluir este comentário.')
+        return redirect('recommendation-detail', id=comentario.recomendacao.id)
+
+    if request.method == 'POST':
+        comentario.delete()
+        messages.success(request, 'Comentário excluído com sucesso.')
+        return redirect('recommendation-detail', id=comentario.recomendacao.id)
+
+    return render(request, 'excluir_comentario.html', {'comentario': comentario})
+
+# Aqui começa a seção de código comentado
 # def usuarioLogado(request):
 #     print('Logado')
 #     if request.user.is_authenticated:
@@ -143,39 +198,8 @@ def buscar_recomendacoes(request):
 #         render(request, "accounts/templetes/login.html")
 #         return 401
 
-#filtragem por palavras similares que estão dando erro ainda
-#def buscar_recomendacoes(request):
-    #     query = request.GET.get('q', '')
-    
-#     if query:
-#         campos_busca = ['bairro', 'endereco', 'logradouro', 'cep', 'cidade']
-
-#         resultados_combinados = []
-
-
-#         for campo in campos_busca:
-#             resultados = []
-#             for instance in recomendacoes.objects.all():
-#                 campo_value = str(getattr(instance, campo))  # Convert to string
-#                 matches = find_near_matches(query, campo_value, max_l_dist=2)
-#                 if matches:
-#                     resultados.append((instance, matches[0].start, matches[0].end))
-
-#             # Ordena os resultados com base na posição da correspondência
-#             resultados.sort(key=lambda x: x[1])
-
-#             for result, _, _ in resultados:
-#                 resultados_combinados.append(result)
-
-#         # Remove duplicatas
-#         resultados_combinados = list(set(resultados_combinados))
-
-#         context = {
-#             'query': query,
-#             'resultados': resultados_combinados
-#         }
-
-#         return render(request, 'resultados_busca.html', context)
-#     else:
-#         return render(request, 'resultados_busca.html', {'resultados': None})
-#sei la
+# filtragem por palavras similares que estão dando erro ainda
+# def buscar_recomendacoes(request):
+#     query = request.GET.get('q', '')
+#     ...
+#     # Continuação do código comentado

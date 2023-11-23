@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Excluir Comentário{% endblock %}
+{% block content %}
+<div class="container mt-4">
+   <div class="row">
+      <div class="col-md-6 offset-md-3">
+         <div class="card">
+            <div class="card-body">
+               <h2 class="card-title">Excluir Comentário</h2>
+               <p class="card-text">Você tem certeza de que deseja excluir o comentário?</p>
+               <form method="post" action="{% url 'excluir-comentario' comentario.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger">Sim, Excluir</button>
+                  <a href="{% url 'recommendation-detail' id=comentario.recomendacao.id %}" class="btn btn-secondary">Cancelar</a>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}
