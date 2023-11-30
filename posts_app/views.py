@@ -36,6 +36,7 @@ def create_recommendation(request):
 
     return render(request, 'recommendation-form.html', {"form": form})
 
+@login_required
 def recommendation_detail(request, id):
     # usuarioLogado(request)
     template_name = 'recommendation-detail.html'  # template
@@ -111,6 +112,7 @@ def curtir_recomendacao(request, id):
     data = {'mensagem': mensagem, 'numero_curtidas': numero_curtidas}
     return JsonResponse(data)
 
+@login_required
 def buscar_recomendacoes(request):
     query = request.GET.get('q')
 
@@ -130,7 +132,8 @@ def buscar_recomendacoes(request):
         return render(request, 'resultados_busca.html', context)
     else:
         return render(request, 'resultados_busca.html', {'resultados': None})
-
+    
+@login_required
 def adicionar_comentario(request, id):
     imovel = get_object_or_404(recomendacoes, id=id)
 

@@ -1,0 +1,33 @@
+.card-image {
+    width: 100%; /* zoom na imagem do imovel */
+    height: 100px;
+    display: block;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+.tag{
+    display: inline-block; /* ou 'inline' se você preferir */
+    background: #FBD9CF;
+    color: rgb(7, 7, 7);
+    text-align: left; /* Alinhamento à esquerda */
+    padding: 5px 10px; /* 10px de padding lateral para dar algum espaço */
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+  /* Você pode precisar ajustar os paddings e as margens para se adequarem exatamente ao design da imagem. */
+  .position-relative {
+    /* A classe position-relative não precisa de estilos adicionais aqui, 
+    a menos que você queira adicionar algum. */
+}
+
+.curtir-btn {
+    top: 10px;  /* Espaço do topo */
+    right: 10px; /* Espaço da direita */
+    z-index: 2; /* Garantir que o botão fique acima da imagem */
+}
+
+.card-img-top:hover + .curtir-btn {
+    display: block; /* Mostrar o botão quando a imagem é hoverada */
+}
+
+/* Se a imagem do botão de curtir deve sempre ser visível, remova a parte :hover do CSS acima */
