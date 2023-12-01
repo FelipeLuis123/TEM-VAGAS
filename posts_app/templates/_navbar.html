@@ -1,15 +1,12 @@
 {% load static %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="{% static 'css/_navbar.css' %}">
-<body class="p-3 m-0 border-0 bd-example">
+<body class="m-0 border-0 bd-example">
     <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container-fluid">
+        <div class="container">
             <a class="navbar-brand" href="/">
-                <img class="logo" src="{% static 'images/logo.png' %}" alt="Logo" />
+                <img class="logo" src="{% static 'images/logo2.png' %}" alt="Logo"/>
             </a>
-            <!-- Toggler/Collapsible Button -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCenteredContent" aria-controls="navbarCenteredContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
             <!-- Navbar content -->
             <div class="collapse navbar-collapse justify-content-center" id="navbarCenteredContent">
                 <div class="navbar-nav">
@@ -23,25 +20,22 @@
             <!-- Dropdown on the right side -->
             <div class="d-flex">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="true">
                         Configurações <img src="{% static 'images/engrenagem.png' %}" alt="Engrenagem">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="#">Perfil</a></li>
                         {% if user.is_authenticated %}
-                            <li>
-                                <li><hr class="dropdown-divider"></li>
-                                <a class="dropdown-item" href="{% url 'logout' %}" id="logoutButton">Sair</a>
-                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}" id="logoutButton">Sair</a></li>
                         {% else %}
                             <li><a class="dropdown-item" href="{% url 'register' %}">Registrar</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{% url 'login' %}">Entrar</a></li>
                         {% endif %}
                     </ul>
-                </li>
-            </div>
-            
+                </li>                
+            </div>           
             <script>
                 document.getElementById('logoutButton').addEventListener('click', function(event) {
                     event.preventDefault();
@@ -55,14 +49,13 @@
                     });
                 });
             </script>
-            
         </div>
     </nav>
    <!-- End Example Code -->
 </body>
 </header>
 <div class="banner mb-4">
-    <div class="banner-overlay"></div>
+    {% comment %} <div class="banner-overlay"></div> {% endcomment %}
     <img src="{% static 'images/banner.jpg' %}" alt="banner" class="banner-image">
     <div class="banner-text">
         <p class="best-solution">A Melhor Solução</p>

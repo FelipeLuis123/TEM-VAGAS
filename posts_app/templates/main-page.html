@@ -5,7 +5,6 @@
 {% block content %}
 <br>
 {% comment %} <a class="btn btn-success m-3" href="{% url 'create-recommendation' %}">Recomende aqui</a> {% endcomment %}
-
 <br>
 <div class="row row-cols-1 row-cols-md-3 g-4" >
    {% for imovel in imovel %}
@@ -29,7 +28,7 @@
                 <p class="mb-0"><span id="numero_curtidas_{{ imovel.id }}">{{ imovel.curtidas.count }}</span></p>
             </div>            
             <div class="d-flex justify-content-between align-items-center mt-0">
-                <button class="tag btn-lg rounded p-1 border-0 text-black"
+                <button class="tag btn-lg rounded p-1 border-0 text-black fw-bold"
                         style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; background-color: #FBD9CF">
                     Casas
                 </button>

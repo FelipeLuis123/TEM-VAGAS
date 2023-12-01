@@ -4,12 +4,18 @@
     background: #0040A1; /* Cor azul conforme a imagem */
     color: white;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1em; /* Espaço interno */
-    gap: 2em; /* Espaçamento entre os itens do menu */
+    justify-content: space-between; /* Isso irá distribuir o espaço entre os itens */
+    align-items: center; /* Isso irá alinhar os itens verticalmente no centro */
+    padding: 0; /* Ajuste de acordo com o espaço necessário */
 }
-/* Estilo dos itens do menu */
+
+/* Estilos adicionais para a navegação e outros itens da navbar */
+
+.logo {
+    width: 73px; /* Largura do logotipo */
+    height: 67px; /* Altura do logotipo */
+    /* 'position: absolute;' foi removido para permitir que 'flexbox' alinhe o logotipo */
+}
 .navbar div {
     cursor: pointer;
     padding: 0.5em 1em;
@@ -18,41 +24,33 @@
 .navbar .active:hover {
     color: #85FF7A; /* Cor verde para o item ativo */
 }
-.logo {
-    position: absolute;
-    top: 0em;
-    left: 1em;
-    width: 73px; /* Ajuste a largura conforme necessário */
-    height: 67px; /* Mantém a proporção da imagem */
-}
 .banner {
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     height: 80vh;
+    overflow: hidden;
 }
-/* Sobreposição escura no banner para melhorar a legibilidade do texto */
+
 .banner::before {
     content: '';
     position: absolute;
     top: 0;
-    left: -16px;
-    right: -16px;
+    left: 0;
+    right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.6); /* Sobreposição mais leve */
-    z-index: 1;
+    background: rgba(0, 0, 0, 0.7); /* Aumenta a escuridão da sobreposição */
+    z-index: 2; /* Certifique-se de que o z-index está acima da imagem do banner */
 }
-/* Estilo do texto no banner */
 .banner-image {
-    width: 100%;
-    height: 80vh; /* ou 'auto' para manter a proporção */
+    width: 100vw; /* Garante que a largura seja a da viewport */
+    height: 80vh;
     object-fit: cover;
     position: absolute;
     top: 0;
-    left: -16px;
-    right: -16px;
-    z-index: 0; /* Imagem por trás de tudo */
+    left: 0;
+    z-index: 1; /* Imagem por trás da sobreposição */
 }
 .banner-text {
     color: white;
