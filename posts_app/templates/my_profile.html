@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+    .profile-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-picture-container {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        overflow: hidden;
+        border-radius: 50%;
+        margin: 20px 0;
+        transition: border 0.3s;
+    }
+
+    .profile-picture {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .edit-button-container {
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .edit-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s;
+    }
+
+    .edit-button:hover {
+        background-color: #0056b3;
+    }
+
+    .nav-link {
+        transition: color 0.3s;
+    }
+
+    .nav-link:hover {
+        color: #007bff;
+    }
+
+    .nav-link.active-hover {
+        color: #007bff !important;
+    }
+
+    .menu-card {
+        margin-top: 20px;
+    }
+
+    .nav-pills .nav-link {
+        border-radius: 0;
+    }
+</style>
+
+<div class="container-fluid mt-5">
+    <div class="row">
+        <!-- Parte 1: Foto do Usuário -->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="h3 mb-0">Perfil</h1>
+                </div>
+                <div class="profile-section">
+                    <div class="profile-picture-container">
+                        <img src="{% static 'perfil_usuario.png' %}" alt="Profile Picture" class="profile-picture" id="profileImage">
+                    </div>
+                    <div class="edit-button-container">
+                        <label for="fileInput" class="btn btn-primary">Escolher nova foto</label>
+                        <input type="file" id="fileInput" class="file-input" accept="image/*" onchange="previewImage(this)">
+                        <button type="button" class="btn btn-secondary edit-button" onclick="uploadNewImage()">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parte 2: Links de Navegação -->
+        <div class="col-md-9">
+            <div class="card menu-card">
+                <div class="card-header">
+                    <!-- Removendo a palavra "Menu" -->
+                    <h1 class="h3 mb-0"></h1>
+                </div>
+                <ul class="nav nav-pills flex-row">
+                    <li class="nav-item">
+                        <a class="nav-link{% if active_tab == 'perfil' %} active{% endif %}" href="#" onclick="loadProfile()">Perfil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{% if active_tab == 'recomendacoes' %} active{% endif %}" href="#" onclick="loadRecommendations()">Minhas Recomendações</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{% if active_tab == 'favoritos' %} active{% endif %}" href="#" onclick="loadFavorites()">Favoritos</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Conteúdo principal -->
+            <div class="card" id="contentContainer">
+                <!-- O conteúdo será carregado aqui -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Adiciona efeito de destaque ao passar o mouse nos botões
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('mouseover', () => {
+            link.classList.add('active-hover');
+        });
+
+        link.addEventListener('mouseout', () => {
+            link.classList.remove('active-hover');
+        });
+
+        link.addEventListener('click', () => {
+            // Remove a classe 'active' de todos os links antes de adicionar ao clicado
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        });
+    });
+
+    // Funções para carregar o conteúdo dinamicamente
+    function loadProfile() {
+        const contentContainer = document.getElementById("contentContainer");
+        contentContainer.innerHTML = `
+            <div class="card-header">
+                <h1 class="h3 mb-0">Editar Meu Perfil</h1>
+            </div>
+            <div class="card-body">
+                <!-- Formulário de Edição de Perfil -->
+                <form id="profileForm" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    <!-- Campos do Formulário -->
+                    <div class="mb-3">
+                        <label for="{{ form.first_name.id_for_label }}" class="form-label">Primeiro Nome:</label>
+                        <input type="text" name="first_name" value="{{ user.first_name }}" class="form-control" id="{{ form.first_name.id_for_label }}">
+                        {{ form.first_name.errors }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.last_name.id_for_label }}" class="form-label">Sobrenome:</label>
+                        <input type="text" name="last_name" value="{{ user.last_name }}" class="form-control" id="{{ form.last_name.id_for_label }}">
+                        {{ form.last_name.errors }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.email.id_for_label }}" class="form-label">Email:</label>
+                        <input type="email" name="email" value="{{ user.email }}" class="form-control" id="{{ form.email.id_for_label }}">
+                        {{ form.email.errors }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.matricula.id_for_label }}" class="form-label">Matrícula:</label>
+                        <input type="text" name="matricula" value="{{ user.matricula }}" class="form-control" id="{{ form.matricula.id_for_label }}">
+                        {{ form.matricula.errors }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Senha:</label>
+                        <a href="{% url 'password_reset' %}" class="btn btn-link">Alterar Senha</a>
+                    </div>
+                    <!-- Adicione mais campos conforme necessário -->
+                    <!-- Botões de Ação -->
+                    <div class="row justify-content-end">
+                        <button type="button" class="btn btn-secondary" onclick="confirmProfileUpdate()">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="submitProfileForm()">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>`;
+    }
+
+    function loadRecommendations() {
+        const contentContainer = document.getElementById("contentContainer");
+        contentContainer.innerHTML = `
+            <div class="card-header">
+                <h1 class="h3 mb-0">Minhas Recomendações</h1>
+            </div>
+            <div class="card-body">
+                {% if recomendacoes %}
+                <ul class="list-group">
+                    {% for recomendacao in recomendacoes %}
+                        <li class="list-group-item">
+                            <a href="{% url 'recommendation-detail' recomendacao.id %}">
+                                <h3>{{ recomendacao.nome }}</h3>
+                            </a>
+                            <p>Endereço: {{ recomendacao.endereco }}</p>
+                            <p>Valor Aluguel: R$ {{ recomendacao.valor_aluguel }}</p>
+                            <p>Quantidade de Quartos: {{ recomendacao.quantidade_quartos }}</p>
+                            <!-- Adicione outros campos conforme necessário -->
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                    <p>Você ainda não fez nenhuma recomendação.</p>
+                {% endif %}
+            </div>`;
+    }
+
+    function loadFavorites() {
+        const contentContainer = document.getElementById("contentContainer");
+        contentContainer.innerHTML = `
+            <div class="card-header">
+                <h1 class="h3 mb-0">Favoritos</h1>
+            </div>
+            <div class="card-body">
+                <!-- Conteúdo de favoritos aqui -->
+            </div>`;
+    }
+
+    function confirmProfileUpdate() {
+        if (confirm("Deseja realmente cancelar as alterações?")) {
+            loadProfile();
+        }
+    }
+
+    function submitProfileForm() {
+        if (confirm("Deseja salvar as alterações?")) {
+            document.getElementById("profileForm").submit();
+        }
+    }
+
+    function previewImage(input) {
+        const profileImage = document.getElementById('profileImage');
+        const file = input.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                profileImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function uploadNewImage() {
+        const fileInput = document.getElementById('fileInput');
+        const formData = new FormData();
+        formData.append('profile_image', fileInput.files[0]);
+
+        // Envie formData para o servidor usando uma solicitação AJAX ou outra abordagem
+
+        // Exemplo de solicitação AJAX usando Fetch API
+        fetch('/url/do/seu/endpoint/', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Lógica para tratar a resposta do servidor
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Erro durante o envio da imagem:', error);
+        });
+    }
+</script>
+
+{% endblock %}
