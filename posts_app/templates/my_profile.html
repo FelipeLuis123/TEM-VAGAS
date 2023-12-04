@@ -99,7 +99,7 @@
                         <a class="nav-link{% if active_tab == 'perfil' %} active{% endif %}" href="#" onclick="loadProfile()">Perfil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link{% if active_tab == 'recomendacoes' %} active{% endif %}" href="#" onclick="loadRecommendations()">Minhas Recomendações</a>
+                        <a class="nav-link{% if active_tab == 'recomendacoes' %} active{% endif %}" href="{% url 'listar-recomendacoes' %}" onclick="loadRecommendations()">Minhas Recomendações</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link{% if active_tab == 'favoritos' %} active{% endif %}" href="#" onclick="loadFavorites()">Favoritos</a>

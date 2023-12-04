@@ -5,7 +5,7 @@
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <img class="logo" src="{% static 'images/logo2.png' %}" alt="Logo"/>
+                <img class="logo" src="{% static 'images/logo3.png' %}" alt="Logo"/>
             </a>
             <!-- Navbar content -->
             <div class="collapse navbar-collapse justify-content-center" id="navbarCenteredContent">
@@ -24,7 +24,7 @@
                         Configurações <img src="{% static 'images/engrenagem.png' %}" alt="Engrenagem">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">Perfil</a></li>
+                        <li><a class="dropdown-item" href="{% url 'meu-perfil' %}">Perfil</a></li>
                         {% if user.is_authenticated %}
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{% url 'logout' %}" id="logoutButton">Sair</a></li>

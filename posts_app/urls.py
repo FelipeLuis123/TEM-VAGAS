@@ -13,5 +13,6 @@ urlpatterns = [
     path('adicionar-comentario/<int:id>/', views.adicionar_comentario, name='adicionar-comentario'),
     path('editar-comentario/<int:comentario_id>/', views.editar_comentario, name='editar-comentario'),
     path('excluir-comentario/<int:comentario_id>/', views.excluir_comentario, name='excluir-comentario'),
-    
+    path('meu-perfil', views.my_profile, name='meu-perfil'),
+
 ]

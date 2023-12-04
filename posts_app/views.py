@@ -190,6 +190,10 @@ def excluir_comentario(request, comentario_id):
 
     return render(request, 'excluir_comentario.html', {'comentario': comentario})
 
+@login_required
+def my_profile(request):
+    return render(request, 'my_profile.html')
+
 # Aqui começa a seção de código comentado
 # def usuarioLogado(request):
 #     print('Logado')
