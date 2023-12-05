@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sobre Nós - TemVagas</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #6c757d;
+        }
+
+        .back-btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="text-center">TemVagas: Facilitando a Busca por Moradia Estudantil</h2>
+            <hr>
+            <h3>Sobre Nós</h3>
+            <p>
+                Seja bem-vindo ao TemVagas, um projeto desenvolvido por David Vinicius F. dos Santos e Luis Felipe V. Pantoja,
+                estudantes do Campus Capitão Poço da Universidade Federal Rural da Amazônia (UFRA). Nosso objetivo é simplificar
+                a jornada de busca por moradia para os discentes da UFRA, especialmente aqueles que chegam ao campus em busca
+                de oportunidades educacionais.
+            </p>
+
+            <h3>O Contexto Tecnológico em Nossas Vidas</h3>
+            <p>
+                Vivemos em uma era onde a tecnologia tem o poder de revolucionar nossas rotinas diárias. Reconhecendo a
+                necessidade de uma solução prática para os desafios enfrentados pelos estudantes universitários, decidimos
+                utilizar o poder da inovação digital para criar algo que vá além de apenas encontrar moradia, mas que também
+                promova a conexão entre a comunidade acadêmica.
+            </p>
+
+            <!-- Add more sections as needed -->
+
+            <h3>Contato</h3>
+            <p>Email: davidfavacho.ufra@gmail.com, l.felipepant@gmail.com</p>
+
+            <!-- Botão de voltar -->
+            <a href="{% url 'main-page' %}" class="btn btn-primary back-btn">Voltar para a Tela Principal</a>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and Popper.js (optional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

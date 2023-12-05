@@ -210,3 +210,7 @@ def my_profile(request):
 #     query = request.GET.get('q', '')
 #     ...
 #     # Continuação do código comentado
+
+@login_required
+def sobre_nos(request):
+    return render(request, 'sobre_nos.html')
