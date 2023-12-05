@@ -1,7 +1,7 @@
 from django.db import models
 from django.dispatch import receiver
-from accounts.models import CustomUser
 from django.db.models.signals import post_save
+from django.contrib.auth import get_user_model
 
 class recomendacoes(models.Model):
     nome = models.CharField(max_length=100)
@@ -20,12 +20,11 @@ class recomendacoes(models.Model):
     descricao = models.TextField()
     image = models.ImageField(upload_to='images/', blank=True, null=True)  
     create_at = models.DateTimeField(auto_now_add=True) 
-    owner = models.ForeignKey('accounts.CustomUser', on_delete=models.CASCADE, null=True)
-    curtidas = models.ManyToManyField(CustomUser, through='Curtida', related_name='curtidas')
+    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True)
+    curtidas = models.ManyToManyField(get_user_model(), through='Curtida', related_name='curtidas')
     
-    def str(self):
+    def __str__(self):
         return self.nome
-    
     
     class Meta:
         verbose_name = 'Imovel'
@@ -33,18 +32,18 @@ class recomendacoes(models.Model):
         ordering = ['id']
 
 class Curtida(models.Model):
-    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     recomendacao = models.ForeignKey(recomendacoes, on_delete=models.CASCADE)
     data_criacao = models.DateTimeField(auto_now_add=True)
 
-    def str(self):
+    def __str__(self):
         return f'Curtida de {self.usuario.username} em {self.recomendacao.nome}'
 
 class Myprofile(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile')
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='profile')
     description = models.CharField(max_length=100)
 
-@receiver(post_save, sender=CustomUser)
+@receiver(post_save, sender=get_user_model())
 def my_handler(sender, **kwargs):
     if kwargs.get('created', False):
         Myprofile.objects.create(user=kwargs['instance'])
@@ -55,10 +54,10 @@ def create_curtida_on_recomendacao_creation(sender, instance, created, **kwargs)
         Curtida.objects.create(usuario=instance.owner, recomendacao=instance)
         
 class Comentario(models.Model):
-    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     recomendacao = models.ForeignKey(recomendacoes, on_delete=models.CASCADE, related_name='comentarios')
     texto = models.TextField()
     data_criacao = models.DateTimeField(auto_now_add=True)
 
-    def _str_(self):
+    def __str__(self):
         return f'Comentário de {self.usuario.username} em {self.recomendacao.nome}'

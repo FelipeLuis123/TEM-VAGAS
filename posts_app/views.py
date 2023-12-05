@@ -118,8 +118,19 @@ def buscar_recomendacoes(request):
 
     if query:
         resultados = recomendacoes.objects.filter(
-            Q(bairro__icontains=query) |  # Substitua 'descricao' pelo campo correto
-            Q(endereco__icontains=query)  # Adicione outros campos se necessário
+            Q(bairro__icontains=query) |  
+            Q(endereco__icontains=query)| 
+            Q(valor_aluguel__icontains=query) |  
+            Q(quantidade_quartos__icontains=query)|  
+            Q(quantidade_banheiros__icontains=query) |  
+            Q(tipo_imovel__icontains=query)  |
+            Q(logradouro__icontains=query) |  
+            Q(descricao__icontains=query)| 
+            Q(cep__icontains=query) |  
+            Q(numero__icontains=query)|  
+            Q(estado__icontains=query) 
+          
+            
             
             # Adicione mais condições se necessário
         ).distinct()

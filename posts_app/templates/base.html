@@ -2,37 +2,89 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>{% block title %}{% endblock %}</title>
-				<!-- CSS -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style>
+        .recomendacoes {
+            background-color: #f8f9fa;
+            padding: 10px; /* Reduzindo o padding */
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .recomendacoes img {
+            max-width: 50px;
+            margin-right: 10px;
+        }
+
+        .recomendacoes .btn-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .recomendacoes button {
+            margin: 5px;
+        }
+
+        .recomendacoes .input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .recomendacoes .input-group input {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-	{% include '_navbar.html' %}
-	<div class="recomendacoes" class="banner mb-4">
-		<ul>
-		<img class="icon" src="{% static 'images/casa.png' %}" alt="Casa" /><span>Casas</span></li>
-		<img class="icon" src="{% static 'images/kitnets.png' %}" alt="Kitnet" /><span>Kitnets</span></li>
-		<img class="icon" src="{% static 'images/compartilhar.png' %}" alt="Compartilhar" /><span>Compartilhar</span></li>
-		<img class="icon" src="{% static 'images/kitnets.png' %}" alt="Condomínio" /><span>Condomínio</span></li>
-		<input class="border-1 rounded" type="search" placeholder="Encontre imóveis...">
-		<img src="{% static 'images/lupa.png' %}" alt="Lupa" width="20">
-		</ul>
-	</div>
-	{% include '_message.html' %}
-		<div class="container">
-			<div class="container p-5">
-				{% if user.is_authenticated %}
-					{% comment %} <h1>Seja Bem vindo, {{user.username}}</h1>   {% endcomment %}
-				{% endif %} 
-				{% block content %} 
-				{% endblock %} 
-			</div>
-		</div>
-		{% include 'footer.html' %}	
-				<!-- JS-->
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    {% include '_navbar.html' %}
+    <div class="recomendacoes mb-4">
+        <form id="searchForm" action="{% url 'buscar-recomendacoes' %}" method="GET" class="d-flex">
+            <div class="btn-group" role="group" aria-label="Categorias">
+                <button type="submit" class="btn btn-outline-primary">
+                    <img class="icon" src="{% static 'images/casa.png' %}" alt="Casa" />
+                    Casas
+                </button>
+                <button type="submit" class="btn btn-outline-primary">
+                    <img class="icon" src="{% static 'images/kitnets.png' %}" alt="Kitnet" />
+                    Kitnets
+                </button>
+                <button type="submit" class="btn btn-outline-primary">
+                    <img class="icon" src="{% static 'images/compartilhar.png' %}" alt="Compartilhar" />
+                    Compartilhar
+                </button>
+                <button type="submit" class="btn btn-outline-primary">
+                    <img class="icon" src="{% static 'images/kitnets.png' %}" alt="Condomínio" />
+                    Condomínio
+                </button>
+            </div>
+            <div class="input-group">
+                <input id="searchInput" class="form-control rounded" type="search" name="q" placeholder="Encontre imóveis...">
+                <button class="btn btn-outline-secondary" type="submit">
+                    <img src="{% static 'images/lupa.png' %}" alt="Lupa" width="20">
+                </button>
+            </div>
+        </form>
+    </div>
+    {% include '_message.html' %}
+    <div class="container">
+        <div class="container p-5">
+            {% if user.is_authenticated %}
+                {# <h1>Seja Bem vindo, {{user.username}}</h1> #}
+            {% endif %} 
+            {% block content %} 
+            {% endblock %} 
+        </div>
+    </div>
+    {% include 'footer.html' %}   
+    <!-- JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 </html>
