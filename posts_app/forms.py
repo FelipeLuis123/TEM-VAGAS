@@ -8,11 +8,10 @@ class RecommendationForm(forms.ModelForm):
         model = recomendacoes
         exclude = ("owner", "curtidas")
 
-    def init(self, *args, **kwargs):
-        super().init(*args, **kwargs)
+    def __init__(self, *args, **kwargs):  # Corrigido aqui
+        super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs["class"] = "form-control"
-
 
 class ComentarioForm(forms.ModelForm):
     class Meta:

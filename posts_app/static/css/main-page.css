@@ -15,11 +15,6 @@
     border-radius: 5px;
 }
   /* Você pode precisar ajustar os paddings e as margens para se adequarem exatamente ao design da imagem. */
-  .position-relative {
-    /* A classe position-relative não precisa de estilos adicionais aqui, 
-    a menos que você queira adicionar algum. */
-}
-
 .curtir-btn {
     top: 10px;  /* Espaço do topo */
     right: 10px; /* Espaço da direita */

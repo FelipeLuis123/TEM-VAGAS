@@ -38,6 +38,7 @@ class Curtida(models.Model):
 
     def __str__(self):
         return f'Curtida de {self.usuario.username} em {self.recomendacao.nome}'
+    
 
 class Myprofile(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='profile')
