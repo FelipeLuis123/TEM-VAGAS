@@ -19,23 +19,27 @@
             </div>
             <!-- Dropdown on the right side -->
             <div class="d-flex">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="true">
-                        Configurações <img src="{% static 'images/engrenagem.png' %}" alt="Engrenagem">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="{% url 'meu-perfil' %}">Perfil</a></li>
-                        {% if user.is_authenticated %}
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url 'logout' %}" id="logoutButton">Sair</a></li>
-                        {% else %}
-                            <li><a class="dropdown-item" href="{% url 'register' %}">Registrar</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url 'login' %}">Entrar</a></li>
-                        {% endif %}
-                    </ul>
-                </li>                
-            </div>           
+                <!-- Contêiner da Lista de Navegação -->
+                <ul class="navbar-nav">
+                    <!-- Item Dropdown Configurações -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light " role="button" data-bs-toggle="dropdown" aria-expanded="true">
+                            Configurações <img src="{% static 'images/engrenagem.png' %}" alt="Engrenagem">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'meu-perfil' %}">Perfil</a></li>
+                            {% if user.is_authenticated %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'logout' %}" id="logoutButton">Sair</a></li>
+                            {% else %}
+                                <li><a class="dropdown-item" href="{% url 'register' %}">Registrar</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'login' %}">Entrar</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>                      
             <script>
                 document.getElementById('logoutButton').addEventListener('click', function(event) {
                     event.preventDefault();
