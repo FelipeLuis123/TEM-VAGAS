@@ -20,10 +20,19 @@
     cursor: pointer;
     padding: 0.5em 1em;
 }
-/* Estilo para o item ativo no menu */
-.navbar .active:hover {
-    color: #85FF7A; /* Cor verde para o item ativo */
+.navbar-nav .nav-link:hover {
+    color: #85FF7A !important; /* Força a mudança de cor para verde ao passar o mouse */
 }
+.navbar-nav .nav-link.active {
+    color: #85FF7A !important; /* Cor para o link da página atual */
+}
+/* .navbar-nav .nav-link:focus {
+    outline: none !important; /* Remove o contorno 
+} */
+/* Estilo para o item ativo no menu */
+/* .navbar .active:hover {
+    color: #85FF7A; /* Cor verde para o item ativo 
+} */
 .banner {
     display: flex;
     justify-content: center;
