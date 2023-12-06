@@ -48,22 +48,26 @@
     <div class="recomendacoes mb-4">
         <form id="searchForm" action="{% url 'buscar-recomendacoes' %}" method="GET" class="d-flex">
             <div class="btn-group" role="group" aria-label="Categorias">
-                <button type="submit" class="btn btn-outline-primary border-0">
+                <a href="{% url 'buscar-recomendacoes' tipo_imovel='casa' %}" class="btn btn-outline-primary border-0">
                     <img class="icon" src="{% static 'images/casa.png' %}" alt="Casa" />
                     Casas
-                </button>
-                <button type="submit" class="btn btn-outline-primary border-0">
+                </a>
+                
+                <a href="{% url 'buscar-recomendacoes' tipo_imovel='kitnet' %}" class="btn btn-outline-primary border-0">
                     <img class="icon" src="{% static 'images/kitnets.png' %}" alt="Kitnet" />
                     Kitnets
-                </button>
-                <button type="submit" class="btn btn-outline-primary border-0">
+                </a>
+                
+                <a href="{% url 'buscar-recomendacoes' tipo_imovel='compartilhar' %}" class="btn btn-outline-primary border-0">
                     <img class="icon" src="{% static 'images/compartilhar.png' %}" alt="Compartilhar" />
                     Compartilhar
-                </button>
-                <button type="submit" class="btn btn-outline-primary border-0">
+                </a>
+                
+                <a href="{% url 'buscar-recomendacoes' tipo_imovel='condominio' %}" class="btn btn-outline-primary border-0">
                     <img class="icon" src="{% static 'images/kitnets.png' %}" alt="Condomínio" />
                     Condomínio
-                </button>
+                </a>
+                
             </div>
             <div class="input-group">
                 <input id="searchInput" class="form-control rounded" type="search" name="q" placeholder="Encontre imóveis...">

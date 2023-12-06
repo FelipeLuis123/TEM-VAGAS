@@ -15,4 +15,7 @@ urlpatterns = [
     path('excluir-comentario/<int:comentario_id>/', views.excluir_comentario, name='excluir-comentario'),
     path('meu-perfil', views.my_profile, name='meu-perfil'),
     path('sobre_nos/', views.sobre_nos, name='sobre_nos'),
+    path('search/', views.search_recommendations, name='search-recommendations'),
+    path('buscar-recomendacoes/<str:tipo_imovel>/', views.buscar_recomendacoes, name='buscar-recomendacoes'),
+
 ]

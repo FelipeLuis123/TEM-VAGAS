@@ -1,0 +1,45 @@
+/* Conteúdo do arquivo styles.css */
+body {
+    background-color: #f8f9fa;
+}
+
+.my-5 {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.text-primary, h2, h3 {
+    color: #007bff;
+}
+
+.btn-primary, .btn-primary:hover {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Conteúdo do arquivo sobre_nos.css */
+.container-content {
+    margin-top: 30px;
+    padding: 30px; /* Adicione algum espaço ao redor do conteúdo */
+}
+
+.container-content h2 {
+    margin-bottom: 20px;
+}
+
+.container-content h3 {
+    margin-top: 20px;
+}
+
+.container-content p {
+    margin-bottom: 15px;
+}
+
+.container-content .btn {
+    margin-top: 20px;
+}

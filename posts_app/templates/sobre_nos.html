@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,73 +7,105 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sobre Nós - TemVagas</title>
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .container {
-            margin-top: 50px;
-            margin-bottom: 50px;
-        }
-
-        h2 {
-            color: #007bff;
-        }
-
-        p {
-            font-size: 18px;
-            line-height: 1.6;
-            color: #6c757d;
-        }
-
-        .back-btn {
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="{% static 'css/sobre_nos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/_navbar.css' %}">
 </head>
 
 <body>
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <h2 class="text-center">TemVagas: Facilitando a Busca por Moradia Estudantil</h2>
-            <hr>
-            <h3>Sobre Nós</h3>
-            <p>
-                Seja bem-vindo ao TemVagas, um projeto desenvolvido por David Vinicius F. dos Santos e Luis Felipe V. Pantoja,
-                estudantes do Campus Capitão Poço da Universidade Federal Rural da Amazônia (UFRA). Nosso objetivo é simplificar
-                a jornada de busca por moradia para os discentes da UFRA, especialmente aqueles que chegam ao campus em busca
-                de oportunidades educacionais.
-            </p>
-
-            <h3>O Contexto Tecnológico em Nossas Vidas</h3>
-            <p>
-                Vivemos em uma era onde a tecnologia tem o poder de revolucionar nossas rotinas diárias. Reconhecendo a
-                necessidade de uma solução prática para os desafios enfrentados pelos estudantes universitários, decidimos
-                utilizar o poder da inovação digital para criar algo que vá além de apenas encontrar moradia, mas que também
-                promova a conexão entre a comunidade acadêmica.
-            </p>
-
-            <!-- Add more sections as needed -->
-
-            <h3>Contato</h3>
-            <p>Email: davidfavacho.ufra@gmail.com, l.felipepant@gmail.com</p>
-
-            <!-- Botão de voltar -->
-            <a href="{% url 'main-page' %}" class="btn btn-primary back-btn">Voltar para a Tela Principal</a>
+    {% include '_navbar.html' %}
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img class="logo" src="{% static 'images/logo3.png' %}" alt="Logo"/>
+            </a>
+            <!-- Navbar content -->
+            <div class="collapse navbar-collapse justify-content-center" id="navbarCenteredContent">
+                <div class="navbar-nav">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/"> Início</a>
+                    <a class="nav-link {% if request.path == '/create-recommendation' %}active{% endif %}" href="{% url 'create-recommendation' %}">Recomende Aqui</a>
+                    <a class="nav-link {% if request.path == '/listar-recomendacoes/' %}active{% endif %}" href="{% url 'listar-recomendacoes' %}">Minhas Recomendações</a>
+                    <!-- Remova o link inativo -->
+                    <!-- <a class="nav-link {% if request.path == '#' %}active{% endif %}" href="#">Favoritos</a> -->
+                    <a class="nav-link {% if request.path == '/sobre_nos/' %}active{% endif %}" href="{% url 'sobre_nos' %}">Sobre nós</a>
+                </div>
+                <!-- Linha divisória -->
+                <hr class="d-lg-none">
+            </div>            
+            <!-- Dropdown on the right side -->
+            <div class="d-flex">
+                <!-- Contêiner da Lista de Navegação -->
+                <ul class="navbar-nav">
+                    <!-- Item Dropdown Configurações -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light " role="button" data-bs-toggle="dropdown" aria-expanded="true">
+                            Configurações <img src="{% static 'images/engrenagem.png' %}" alt="Engrenagem">
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'meu-perfil' %}">Perfil</a></li>
+                            {% if user.is_authenticated %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'logout' %}" id="logoutButton">Sair</a></li>
+                            {% else %}
+                                <li><a class="dropdown-item" href="{% url 'register' %}">Registrar</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'login' %}">Entrar</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>                      
+            <script>
+                document.getElementById('logoutButton').addEventListener('click', function(event) {
+                    event.preventDefault();
+                    fetch('{% url 'logout' %}')
+                    .then(response => {
+                        // Lidar com a resposta
+                        window.location.href = '{% url 'logout' %}';
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                    });
+                });
+            </script>
+        </div>
+    </nav>
+  
+    <div class="container my-5 container-content">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h2 class="text-center text-primary">TemVagas: Facilitando a Jornada Acadêmica</h2>
+                <hr>
+                <h3>Sobre Nós</h3>
+                <p class="text-justify">
+                    Bem-vindo ao universo TemVagas, uma iniciativa vibrante criada pelos visionários David Vinicius F. dos Santos e Luis Felipe V. Pantoja, ambos provenientes do Campus Capitão Poço da renomada Universidade Federal Rural da Amazônia (UFRA). Nossa missão transcende a simples busca por moradia; aspiramos a moldar uma experiência transformadora, forjando um ambiente caloroso e facilitando a transição dos estudantes para a vida acadêmica.
+                </p>
+    
+                <h3>A Vanguarda Tecnológica em Nossas Vidas</h3>
+                <p class="text-justify">
+                    Imersos na fascinante era tecnológica, reconhecemos a imperiosa demanda por soluções inovadoras que enfrentem os desafios cotidianos dos estudantes universitários. Utilizando o poder da inovação digital, nosso compromisso vai além da mera busca por moradia; almejamos fomentar uma comunidade acadêmica conectada e fortalecida. Na visão TemVagas, a inovação digital não só resolve problemas, mas também cria oportunidades excepcionais.
+                </p>
+    
+                <h3>Desbravando Horizontes</h3>
+                <p class="text-justify">
+                    Navegue pelas seções TemVagas e descubra um universo de possibilidades. Desde recomendações personalizadas até a facilidade de encontrar companheiros de moradia, estamos aqui para simplificar sua jornada acadêmica. Permita-nos ser o guia na sua busca por moradia, transformando desafios em oportunidades emocionantes.
+                </p>
+    
+                <h3>Contato</h3>
+                <p>Email: davidfavacho.ufra@gmail.com, l.felipepant@gmail.com</p>
+    
+                <!-- Botão de voltar -->
+                <a href="{% url 'main-page' %}" class="btn btn-primary mt-3">Voltar para a Tela Principal</a>
+            </div>
         </div>
     </div>
-</div>
-
-<!-- Bootstrap JS and Popper.js (optional) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    
+    
+{% include 'footer.html' %}   
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

@@ -11,7 +11,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <div class="ms-5">
           <a href="{% url 'recommendation-detail' recomendacao.id %}">
-            <h3>{{ recomendacao.nome }}</h3>
+            <h3>{{ recomendacao.tipo_imovel }}</h3>
           </a>
           <p>Endereço: {{ recomendacao.endereco }}</p>
           <p>Valor Aluguel: R$ {{ recomendacao.valor_aluguel }}</p>

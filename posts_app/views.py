@@ -112,38 +112,36 @@ def curtir_recomendacao(request, id):
     data = {'mensagem': mensagem, 'numero_curtidas': numero_curtidas}
     return JsonResponse(data)
 
-@login_required
-def buscar_recomendacoes(request):
-    query = request.GET.get('q')
-
-    if query:
-        resultados = recomendacoes.objects.filter(
-            Q(bairro__icontains=query) |  
-            Q(endereco__icontains=query)| 
-            Q(valor_aluguel__icontains=query) |  
-            Q(quantidade_quartos__icontains=query)|  
-            Q(quantidade_banheiros__icontains=query) |  
-            Q(tipo_imovel__icontains=query)  |
-            Q(logradouro__icontains=query) |  
-            Q(descricao__icontains=query)| 
-            Q(cep__icontains=query) |  
-            Q(numero__icontains=query)|  
-            Q(estado__icontains=query) 
-          
-            
-            
-            # Adicione mais condições se necessário
-        ).distinct()
-
-        context = {
-            'query': query,
-            'resultados': resultados
-        }
-
-        return render(request, 'resultados_busca.html', context)
-    else:
-        return render(request, 'resultados_busca.html', {'resultados': None})
+def buscar_recomendacoes(request, tipo_imovel=None):
+    query = request.GET.get('q', '')
     
+    resultados = recomendacoes.objects.filter(
+        Q(bairro__icontains=query) |  
+        Q(endereco__icontains=query)| 
+        Q(valor_aluguel__icontains=query) |  
+        Q(quantidade_quartos__icontains=query)|  
+        Q(quantidade_banheiros__icontains=query) |  
+        Q(tipo_imovel__icontains=query)  |
+        Q(logradouro__icontains=query) |  
+        Q(descricao__icontains=query)| 
+        Q(cep__icontains=query) |  
+        Q(numero__icontains=query)|  
+        Q(estado__icontains=query) |
+        Q(cidade__icontains=query)  | 
+        Q(image__icontains=query)  |  
+        Q(owner__username__icontains=query)
+    )
+    
+    if tipo_imovel:
+        resultados = resultados.filter(tipo_imovel__icontains=tipo_imovel)
+
+    context = {
+        'query': query,
+        'resultados': resultados
+    }
+
+    return render(request, 'resultados_busca.html', context)
+ 
 @login_required
 def adicionar_comentario(request, id):
     imovel = get_object_or_404(recomendacoes, id=id)
@@ -225,3 +223,9 @@ def my_profile(request):
 @login_required
 def sobre_nos(request):
     return render(request, 'sobre_nos.html')
+
+
+def search_recommendations(request):
+    tipo_imovel = request.GET.get('tipo_imovel', '')
+    imoveis = recomendacoes.objects.filter(tipo_imovel__icontains=tipo_imovel)
+    return render(request, 'main-page.html', {'imovel': imoveis})
