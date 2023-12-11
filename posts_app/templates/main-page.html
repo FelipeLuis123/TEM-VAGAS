@@ -8,30 +8,38 @@
 {% block content %}
 <br>
 <div class="container">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for imovel in imovel %}
             <div class="col">
-                <div class="card h-100 text-bg-light border-0">
-                    <div class="position-relative">
+                <div class="card h-100 text-bg-light border-0 img-zoom-container">
+                    <div class="position-relative img-zoom">
                         <img src="{% if imovel.image and imovel.image.url %}{{ imovel.image.url }}{% endif %}" class="card-img-top rounded" alt="Imagem do Imóvel" style="height: 280px; object-fit: cover;">
+                        <!-- Botão de Curtir -->
                         {% if request.user in imovel.curtidas.all %}
-                            <button class="btn btn-outline-light curtir-btn border-0 position-absolute top-0 end-0" data-recomendacao-id="{{ imovel.id }}" data-curtida="true">
+                            <button class="btn btn-outline-light curtir-btn border-0 position-absolute top-0 start-0" data-recomendacao-id="{{ imovel.id }}" data-curtida="true">
                                 <img src="{% static 'images/curtidavermelha.png' %}" alt="Curtir" width="30">
                             </button>
                         {% else %}
-                            <button class="btn btn-outline-light curtir-btn border-0 position-absolute top-0 end-0" data-recomendacao-id="{{ imovel.id }}" data-curtida="false">
+                            <button class="btn btn-outline-light curtir-btn border-0 position-absolute top-0 start-0" data-recomendacao-id="{{ imovel.id }}" data-curtida="false">
                                 <img src="{% static 'images/curtidanormal.png' %}" alt="Curtir" width="30">
                             </button>
                         {% endif %}
+                        <!-- Botão de Favoritar -->
+                        <button id="favoritar-btn-{{ imovel.id }}" class="btn btn-outline-light favoritar-btn border-0 position-absolute top-0 end-0" data-recomendacao-id="{{ imovel.id }}" data-favorito="{% if request.user in imovel.favoritos.all %}true{% else %}false{% endif %}">
+                            {% if request.user in imovel.favoritos.all %}
+                                <img src="{% static 'images/estrela_amarela.png' %}" alt="Favoritar" width="30">
+                            {% else %}
+                                <img src="{% static 'images/estrela.png' %}" alt="Favoritar" width="30">
+                            {% endif %}
+                        </button>
                     </div>
                     <div class="card-body ">
                         <div class="d-flex align-items-center justify-content-end">
-                            <img src="{% static 'images/curtidavermelha.png' %}" alt="Estrela" width="20" class="me-2"> <!-- Ajuste a largura conforme necessário -->
+                            <img src="{% static 'images/curtidavermelha.png' %}" alt="Estrela" width="20" class="me-2">
                             <p class="mb-0"><span id="numero_curtidas_{{ imovel.id }}">{{ imovel.curtidas.count }}</span></p>
-                        </div>            
+                        </div>
                         <div class="d-flex justify-content-between align-items-center mt-0">
-                            <button class="tag btn-lg rounded p-1 border-0 text-black fw-bold"
-                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; background-color: #FBD9CF">
+                            <button class="tag btn-lg rounded p-1 border-0 text-black fw-bold" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem; background-color: #FBD9CF">
                                 {{ imovel.tipo_imovel }}
                             </button>
                             <h4 class="mb-0 fw-bold" style="color: #F35525">
@@ -39,53 +47,106 @@
                             </h4>
                         </div>
                         <br>
-                        <h4 class="text-start ">{{ imovel.endereco}}</h4>
+                        <h4 class="text-start">{{ imovel.endereco}}</h4>
                         <br>
                         <p class="text-start fw-bold">Quartos: {{ imovel.quantidade_quartos }} Banheiros: {{ imovel.quantidade_banheiros }}</p>
                         <br>
                         <div class="text-center">
-                           <hr>
-                           <!-- Link para Detalhes -->
-                           <a class="btn btn-success rounded-pill text-white bg-dark" href="{% url 'recommendation-detail' imovel.id %}">Ver +</a>
-                           <!-- Botão de Curtir -->
-                           <!-- Contagem de Curtidas -->
+                            <hr>
+                            <!-- Link para Detalhes -->
+                            <a class="btn btn-success rounded-pill text-white bg-dark" href="{% url 'recommendation-detail' imovel.id %}">Ver +</a>
+                            <!-- Botão de Curtir -->
+                            <!-- Contagem de Curtidas -->
                         </div>
-                     </div>
+                    </div>
                 </div>
                 <br>
             </div>
         {% endfor %}
     </div>
 </div>
+
 <!-- Adicione esta linha no cabeçalho do seu template para incluir o jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 <script>
-   $('.curtir-btn').on('click', function () {
-       var btn = $(this);
-       var recomendacaoId = btn.data('recomendacao-id');
-       var curtidaStatus = btn.data('curtida');
-       $.ajax({
-       url: `/curtir_recomendacao/${recomendacaoId}/`,
-           method: 'GET',
-           dataType: 'json',
-           success: function (data) {
-               // Atualizar a contagem de curtidas na interface do usuário
-               $('#numero_curtidas_' + recomendacaoId).text(data.numero_curtidas);
-   
-               // Alterar o status de curtida no botão
-               btn.data('curtida', !curtidaStatus);
-   
-               // Alterar a imagem do botão com base no novo status
-               if (!curtidaStatus) {
-                   btn.find('img').attr('src', '{% static "images/curtidavermelha.png" %}');
-               } else {
-                   btn.find('img').attr('src', '{% static "images/curtidanormal.png" %}');
-               }
-           },
-           error: function (error) {
-               console.error('Erro na solicitação AJAX:', error);
-           }
-       });
-   });
+    $(document).ready(function () {
+        $('.img-zoom').hover(function () {
+            $(this).addClass('transition');
+        }, function () {
+            $(this).removeClass('transition');
+        });
+
+        $('.curtir-btn').on('click', function () {
+            var btn = $(this);
+            var recomendacaoId = btn.data('recomendacao-id');
+            var curtidaStatus = btn.data('curtida');
+            $.ajax({
+                url: `/curtir_recomendacao/${recomendacaoId}/`,
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Atualizar a contagem de curtidas na interface do usuário
+                    $('#numero_curtidas_' + recomendacaoId).text(data.numero_curtidas);
+
+                    // Alterar o status de curtida no botão
+                    btn.data('curtida', !curtidaStatus);
+
+                    // Alterar a imagem do botão com base no novo status
+                    if (!curtidaStatus) {
+                        btn.find('img').attr('src', '{% static "images/curtidavermelha.png" %}');
+                    } else {
+                        btn.find('img').attr('src', '{% static "images/curtidanormal.png" %}');
+                    }
+                },
+                error: function (error) {
+                    console.error('Erro na solicitação AJAX:', error);
+                }
+            });
+        });
+
+        $('.favoritar-btn').on('click', function () {
+            var btn = $(this);
+            var recomendacaoId = btn.data('recomendacao-id');
+            var status = btn.data('favorito') || false;
+            var imgPath = '{% static "images/estrela" %}';  // Atualize esta linha
+            var imgAlt = 'Favoritar';
+
+            $.ajax({
+                url: `/favoritar_recomendacao/${recomendacaoId}/`,
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Alterar o status no botão
+                    btn.data('favorito', !status);
+
+                    // Alterar a imagem do botão com base no novo status
+                    var newImgSrc = !status ? imgPath + '_amarela.png' : imgPath + '.png';
+                    btn.find('img').attr('src', newImgSrc).attr('alt', imgAlt);
+
+                    console.log('Status atualizado para:', !status);
+                    console.log('Novo caminho da imagem:', newImgSrc);
+                },
+                error: function (error) {
+                    console.error('Erro na solicitação AJAX para favoritar:', error);
+                }
+            });
+        });
+    });
 </script>
+
+<style>
+    .img-zoom-container {
+        overflow: hidden;
+    }
+
+    .img-zoom {
+        transition: transform 0.3s;
+    }
+
+    .img-zoom.transition {
+        transform: scale(0.9);
+    }
+</style>
+
 {% endblock content %}

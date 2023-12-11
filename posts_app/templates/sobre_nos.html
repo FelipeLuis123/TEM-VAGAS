@@ -26,8 +26,7 @@
                     <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/"> Início</a>
                     <a class="nav-link {% if request.path == '/create-recommendation' %}active{% endif %}" href="{% url 'create-recommendation' %}">Recomende Aqui</a>
                     <a class="nav-link {% if request.path == '/listar-recomendacoes/' %}active{% endif %}" href="{% url 'listar-recomendacoes' %}">Minhas Recomendações</a>
-                    <!-- Remova o link inativo -->
-                    <!-- <a class="nav-link {% if request.path == '#' %}active{% endif %}" href="#">Favoritos</a> -->
+                    <a class="nav-link {% if request.path == '/favoritos/' %}active{% endif %}" href="{% url 'favoritos' %}">Favoritos</a>                    
                     <a class="nav-link {% if request.path == '/sobre_nos/' %}active{% endif %}" href="{% url 'sobre_nos' %}">Sobre nós</a>
                 </div>
                 <!-- Linha divisória -->
@@ -75,34 +74,143 @@
     <div class="container my-5 container-content">
         <div class="row">
             <div class="col-md-8 offset-md-2">
-                <h2 class="text-center text-primary">TemVagas: Facilitando a Jornada Acadêmica</h2>
+                <h2 class="text-center text-primary">Descubra Mais Sobre Nós</h2>
                 <hr>
-                <h3>Sobre Nós</h3>
+    
+                <!-- Seção 1: Conectando Você ao Coração do Nosso Negócio -->
+                <h3>Conectando Você ao Coração do Nosso Negócio</h3>
+                <div class="text-center">
+                    <img src="{% static 'images/banner.jpg' %}" class="img-fluid" alt="Conexão">
+                </div>
                 <p class="text-justify">
-                    Bem-vindo ao universo TemVagas, uma iniciativa vibrante criada pelos visionários David Vinicius F. dos Santos e Luis Felipe V. Pantoja, ambos provenientes do Campus Capitão Poço da renomada Universidade Federal Rural da Amazônia (UFRA). Nossa missão transcende a simples busca por moradia; aspiramos a moldar uma experiência transformadora, forjando um ambiente caloroso e facilitando a transição dos estudantes para a vida acadêmica.
+                    <strong>Bem-Vindo ao TemVagas:</strong><br>
+                    Embarque em uma jornada única e desvende os intricados bastidores do TemVagas. Não somos apenas uma simples plataforma de busca por moradia; somos um projeto concebido com paixão pelos visionários David Vinicius F. dos Santos e Luis Felipe V. Pantoja. Originários do Campus Capitão Poço da renomada Universidade Federal Rural da Amazônia (UFRA), nosso propósito vai além de oferecer um serviço de busca - é criar uma experiência significativa e transformadora. Este convite para explorar o TemVagas é um convite para se conectar com algo mais profundo, algo que transcende a simples procura por moradia.
+                </p>
+                
+                <p class="text-justify">
+                    Compreendemos os desafios enfrentados pelos estudantes universitários na busca por moradia acadêmica. A transição para a vida acadêmica é um momento crucial, e muitas vezes, a busca por um lar adequado pode ser desafiadora e estressante. Identificamos essa lacuna e estamos comprometidos em superar esses desafios diários, proporcionando uma solução inovadora e digital que não apenas atende às necessidades práticas, mas também cria um ambiente acolhedor para a transição dos estudantes.
+                </p>
+                
+                <p class="text-justify">
+                    Nosso objetivo vai além de simplesmente fornecer recomendações de moradia. Buscamos criar uma comunidade acadêmica conectada e fortalecida. Cada linha de código, cada recomendação personalizada e cada conexão formada reflete nosso comprometimento em orientar os estudantes em uma jornada além das expectativas. Queremos ser mais do que uma ferramenta - pretendemos ser a força propulsora que cria oportunidades extraordinárias para aqueles que confiam em nós.
+                </p>
+                
+                <p class="text-justify">                
+                    Desvendamos os bastidores do TemVagas, conectando você ao coração do nosso negócio. Nossa missão é estabelecer uma conexão profunda entre você, o consumidor, e o cerne da nossa plataforma. Compartilhamos uma visão única e paixão por tornar a busca por moradia acadêmica uma experiência verdadeiramente significativa.
+                </p>
+                
+                <p class="text-justify">
+                    Vamos além da simples busca por moradia, buscando moldar uma experiência transformadora. Nossa essência reside em criar um ambiente acolhedor que facilite a transição dos estudantes para a vida acadêmica. Adentramos o cenário tecnológico para oferecer soluções inovadoras que superem os desafios diários enfrentados pelos universitários.
+                </p>
+                
+                <p class="text-justify">
+                    Nossos alicerces são fundamentados em valores sólidos, uma missão ousada, crenças inabaláveis e uma visão inspiradora. Cada interação com o TemVagas reflete nosso compromisso em antecipar não apenas suas necessidades, mas seus desejos e anseios, guiando-o em uma jornada além das expectativas com cada recomendação personalizada.
+                </p>
+                
+                <p class="text-justify">
+                    No TemVagas, não estamos apenas aqui para oferecer respostas para suas perguntas sobre moradia acadêmica, mas para criar uma experiência completa. Seja explicando o processo de criação de uma conta, detalhando os benefícios de ter uma conta no TemVagas ou fornecendo meios para entrar em contato com nosso suporte, estamos comprometidos em tornar sua jornada de busca por moradia a melhor possível. Estamos aqui para você, conectando sonhos e lares em uma experiência única e personalizada.
+                </p>
+                
+    
+                <!-- Seção 2: A Essência do TemVagas -->
+                <h3>A Essência do TemVagas</h3>
+                <div class="text-center">
+                    <img src="{% static 'images/banner.jpg' %}" class="img-fluid" alt="Essência">
+                </div>
+                <p class="text-justify">
+ 
+                
+                    <strong>Queremos Proporcionar uma Experiência Transformadora:</strong><br>
+                    A essência do TemVagas reside em nossa busca incessante para proporcionar uma experiência que vai além da simples busca por moradia. Entendemos que a transição para a vida acadêmica é um momento crucial na jornada de um estudante, e é por isso que buscamos moldar uma experiência transformadora que não se limite apenas à identificação de moradias. Nosso objetivo é criar um ambiente acolhedor que facilite essa transição, tornando-a suave e significativa.
+                    <br/><br/>
+                    <strong>Adentrando o Cenário Tecnológico:</strong><br>
+                    Compreendemos as demandas modernas dos estudantes universitários, e é por isso que adentramos o cenário tecnológico. Nossa plataforma não é apenas uma resposta às necessidades práticas, mas sim uma solução inovadora que utiliza a tecnologia para superar os desafios diários enfrentados pelos universitários. A inovação digital no TemVagas não é simplesmente uma ferramenta; é a força propulsora que cria oportunidades extraordinárias para os estudantes.
+                    <br/><br/>
+                    <strong>Inovação Digital como Força Propulsora:</strong><br>
+                    No TemVagas, encaramos a inovação digital como mais do que apenas uma ferramenta técnica. Ela é a força propulsora que impulsiona nossos esforços para criar oportunidades extraordinárias. Ao incorporar tecnologias avançadas, não apenas simplificamos a busca por moradia, mas também abrimos novas possibilidades e horizontes para os estudantes universitários. Acreditamos que a inovação é o elemento-chave para a transformação positiva na jornada acadêmica.
+                    <br/><br/>
+                    <strong>Criando Oportunidades Extraordinárias:</strong><br>
+                    Para nós, criar oportunidades extraordinárias não é apenas um lema, mas uma promessa. Estamos comprometidos em ir além do convencional, explorando constantemente novas maneiras de melhorar a experiência dos estudantes universitários. Seja através de recursos tecnológicos avançados, parcerias estratégicas ou abordagens inovadoras, nossa essência é impulsionar a transformação positiva na jornada acadêmica, oferecendo oportunidades únicas e valiosas aos nossos usuários.
+                </p>
+                
+    
+                <!-- Seção 3: Valores, Missão, Crenças e Visão -->
+                <h3>Valores, Missão, Crenças e Visão</h3>
+                <div class="text-center">
+                    <img src="{% static 'images/valores.jpg' %}" class="img-fluid" alt="Valores">
+                </div>
+                <p class="text-justify">
+                    Nossos alicerces são fundamentados em valores sólidos, uma missão ousada, crenças inabaláveis e uma visão inspiradora. Cada linha de código, cada recomendação personalizada e cada conexão formada reflete nosso comprometimento em construir uma comunidade acadêmica conectada e fortalecida. No TemVagas, não apenas respondemos às suas necessidades, mas antecipamos seus desejos e anseios, guiando-o em uma jornada além das expectativas.
                 </p>
     
-                <h3>A Vanguarda Tecnológica em Nossas Vidas</h3>
+                <!-- Seção 4: Respostas para Suas Perguntas -->
+                <h3>Respostas para as perguntas mais frequentes</h3>
+                <!-- Pergunta 1 -->
+                <button class="question-btn" data-toggle="collapse" data-target="#pergunta1">
+                    <h4>1. Como faço para criar uma conta no TemVagas?</h4>
+                </button>
+                <div id="pergunta1" class="collapse">
+                    <p class="text-justify">
+                        Para criar uma conta no TemVagas, siga estes passos simples:
+                        <ol>
+                            <li>Acesse a página inicial do TemVagas.</li>
+                            <li>Clique no botão "Registrar" no canto superior direito.</li>
+                            <li>Preencha o formulário de registro com suas informações.</li>
+                            <li>Após o registro, você receberá um e-mail de confirmação.</li>
+                            <li>Confirme seu e-mail e pronto, sua conta está criada!</li>
+                        </ol>
+                    </p>
+                </div>
+
+                <!-- Pergunta 2 -->
+                <button class="question-btn" data-toggle="collapse" data-target="#pergunta2">
+                    <h4>2. Posso favoritar recomendações de imóveis?</h4>
+                </button>
+                <div id="pergunta2" class="collapse">
+                    <p class="text-justify">
+                        Sim, você pode favoritar recomendações de imóveis. Quando estiver logado em sua conta, basta clicar no botão de estrela na recomendação desejada. Isso a adicionará à sua lista de favoritos para fácil acesso posteriormente.
+                    </p>
+                </div>
+
+                <!-- Pergunta 3 -->
+                <button class="question-btn" data-toggle="collapse" data-target="#pergunta3">
+                    <h4>3. Quais são os benefícios de ter uma conta no TemVagas?</h4>
+                </button>
+                <div id="pergunta3" class="collapse">
+                    <p class="text-justify">
+                        Ter uma conta no TemVagas oferece diversos benefícios, incluindo:
+                        <ul>
+                            <li>Acesso a recomendações personalizadas com base em suas preferências.</li>
+                            <li>A capacidade de favoritar imóveis para referência futura.</li>
+                            <li>Participação em comunidades e fóruns exclusivos para membros.</li>
+                            <li>Receber atualizações sobre novas oportunidades de moradia.</li>
+                            <li>Interagir com outros membros e compartilhar experiências.</li>
+                        </ul>
+                    </p>
+                </div>
+
+                <!-- Pergunta 4 -->
+                <button class="question-btn" data-toggle="collapse" data-target="#pergunta4">
+                    <h4>4. Como posso entrar em contato com o suporte do TemVagas?</h4>
+                </button>
+                <div id="pergunta4" class="collapse">
+                    <p class="text-justify">
+                        Para entrar em contato com nosso suporte, envie um e-mail para suporte@temvagas.com. Nossa equipe estará pronta para ajudar com qualquer dúvida ou problema que você possa ter.
+                    </p>
+                </div>
+
+                <!-- Texto adicional -->
                 <p class="text-justify">
-                    Imersos na fascinante era tecnológica, reconhecemos a imperiosa demanda por soluções inovadoras que enfrentem os desafios cotidianos dos estudantes universitários. Utilizando o poder da inovação digital, nosso compromisso vai além da mera busca por moradia; almejamos fomentar uma comunidade acadêmica conectada e fortalecida. Na visão TemVagas, a inovação digital não só resolve problemas, mas também cria oportunidades excepcionais.
+                    Esperamos que essas perguntas frequentes tenham ajudado a esclarecer suas dúvidas sobre o TemVagas. Se você tiver mais perguntas, não hesite em entrar em contato conosco. Estamos aqui para tornar sua jornada de busca por moradia acadêmica a melhor possível.
                 </p>
-    
-                <h3>Desbravando Horizontes</h3>
-                <p class="text-justify">
-                    Navegue pelas seções TemVagas e descubra um universo de possibilidades. Desde recomendações personalizadas até a facilidade de encontrar companheiros de moradia, estamos aqui para simplificar sua jornada acadêmica. Permita-nos ser o guia na sua busca por moradia, transformando desafios em oportunidades emocionantes.
-                </p>
-    
-                <h3>Contato</h3>
-                <p>Email: davidfavacho.ufra@gmail.com, l.felipepant@gmail.com</p>
-    
+
                 <!-- Botão de voltar -->
                 <a href="{% url 'main-page' %}" class="btn btn-primary mt-3">Voltar para a Tela Principal</a>
             </div>
         </div>
     </div>
-    
-    
-{% include 'footer.html' %}   
+
+    {% include 'footer.html' %}
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

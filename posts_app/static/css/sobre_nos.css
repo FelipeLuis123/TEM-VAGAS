@@ -1,4 +1,4 @@
-/* Conteúdo do arquivo styles.css */
+/* Estilos Globais */
 body {
     background-color: #f8f9fa;
 }
@@ -22,10 +22,8 @@ body {
     border-color: #0056b3;
 }
 
-/* Conteúdo do arquivo sobre_nos.css */
 .container-content {
     margin-top: 30px;
-    padding: 30px; /* Adicione algum espaço ao redor do conteúdo */
 }
 
 .container-content h2 {
@@ -42,4 +40,63 @@ body {
 
 .container-content .btn {
     margin-top: 20px;
+}
+
+/* Estilos para as Imagens */
+.img-fluid {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* Estilos Específicos para Cada Seção */
+.container-content h3 {
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
+/* Estilo para Botão de Voltar */
+.btn-primary {
+    margin-top: 30px;
+}
+
+/* Estilo para o Container de Contato */
+.container-content h3:last-of-type {
+    border-bottom: none;
+}
+
+/* Responsividade para Imagens em Tamanhos Menores */
+@media (max-width: 767px) {
+    .img-fluid {
+        margin-bottom: 10px;
+    }
+}
+
+/* Estilos para a seção de perguntas e respostas */
+.question-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    text-align: left;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.question-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.question-btn h4 {
+    color: #007bff; /* Cor do texto da pergunta */
+    margin-bottom: 0;
+}
+
+.collapse {
+    margin-top: 10px;
 }

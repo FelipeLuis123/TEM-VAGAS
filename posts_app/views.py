@@ -1,3 +1,4 @@
+
 from django.shortcuts import get_object_or_404, render, redirect
 from posts_app.models import recomendacoes
 from django.contrib import messages
@@ -10,6 +11,7 @@ from django.db.models import Q
 from .forms import ComentarioForm  # Certifique-se de importar o formulário de comentário
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Comentario
+ 
 
 def destaques(request):
     # usuarioLogado(request)
@@ -229,3 +231,29 @@ def search_recommendations(request):
     tipo_imovel = request.GET.get('tipo_imovel', '')
     imoveis = recomendacoes.objects.filter(tipo_imovel__icontains=tipo_imovel)
     return render(request, 'main-page.html', {'imovel': imoveis})
+
+@login_required
+def favoritar_recomendacao(request, id):
+    recomendacao = get_object_or_404(recomendacoes, id=id)
+
+    if request.user in recomendacao.favoritos.all():
+        recomendacao.favoritos.remove(request.user)
+        mensagem = 'Favorito removido'
+    else:
+        recomendacao.favoritos.add(request.user)
+        mensagem = 'Recomendação favoritada'
+
+    return JsonResponse({'status': 'success', 'mensagem': mensagem})
+
+@login_required
+def favoritos(request):
+    # Recupere o usuário logado
+    usuario_logado = request.user
+
+    # Recupere todas as recomendações favoritas do usuário
+    recomendacoes_favoritas = recomendacoes.objects.filter(favoritos=usuario_logado)
+
+    # Passe as recomendações favoritas para o template
+    context = {'recomendacoes_favoritas': recomendacoes_favoritas}
+    return render(request, 'favoritos.html', context)
+

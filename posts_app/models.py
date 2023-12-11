@@ -22,7 +22,8 @@ class recomendacoes(models.Model):
     create_at = models.DateTimeField(auto_now_add=True) 
     owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, null=True)
     curtidas = models.ManyToManyField(get_user_model(), through='Curtida', related_name='curtidas')
-    
+    favoritos = models.ManyToManyField(get_user_model(), through='Favorito', related_name='favoritos')
+
     def __str__(self):
         return self.nome
     
@@ -53,6 +54,8 @@ def my_handler(sender, **kwargs):
 def create_curtida_on_recomendacao_creation(sender, instance, created, **kwargs):
     if created:
         Curtida.objects.create(usuario=instance.owner, recomendacao=instance)
+        Favorito.objects.create(usuario=instance.owner, recomendacao=instance)
+
         
 class Comentario(models.Model):
     usuario = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
@@ -62,3 +65,16 @@ class Comentario(models.Model):
 
     def __str__(self):
         return f'Comentário de {self.usuario.username} em {self.recomendacao.nome}'
+
+class Favorito(models.Model):
+    usuario = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    recomendacao = models.ForeignKey(recomendacoes, on_delete=models.CASCADE)
+    data_criacao = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Favorito de {self.usuario.username} em {self.recomendacao.nome}'
+
+
+
+
+

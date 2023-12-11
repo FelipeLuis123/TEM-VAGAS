@@ -1,0 +1,58 @@
+/* No arquivo styles.css */
+body {
+    background-color: #f8f9fa;
+}
+
+.container-content {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.favoritar-btn {
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.favoritar-btn:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.card-image {
+    width: 100%;
+    height: 100px;
+    display: block;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.tag {
+    display: inline-block;
+    background: #FBD9CF;
+    color: rgb(7, 7, 7);
+    text-align: left;
+    padding: 5px 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.curtir-btn {
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+}
+
+.card-img-top:hover + .curtir-btn {
+    display: block;
+}
+
+/* Se a imagem do botão de curtir deve sempre ser visível, remova a parte :hover do CSS acima */
+

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Residências disponíveis para alocar ou dividir aluguel - Tem Vagas{% endblock %}
+
 {% block content %}
     {% load static %}
     <br>
@@ -8,14 +9,21 @@
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 {% for imovel in resultados %}
                     <div class="col">
-                        <div class="card h-100 text-bg-light border-0">
-                            <div class="position-relative">
+                        <div class="card h-100 text-bg-light border-0 img-zoom-container">
+                            <div class="position-relative img-zoom">
                                 <img src="{% if imovel.image and imovel.image.url %}{{ imovel.image.url }}{% else %}{% static 'caminho/do/seu/placeholder.jpg' %}{% endif %}" class="card-img-top" alt="Imagem do Imóvel">
                                 <button class="btn btn-outline-light curtir-btn border-0 position-absolute top-0 end-0" data-recomendacao-id="{{ imovel.id }}" data-curtida="{% if request.user in imovel.curtidas.all %}true{% else %}false{% endif %}">
                                     {% if request.user in imovel.curtidas.all %}
                                         <img src="{% static 'images/curtidavermelha.png' %}" alt="Curtir" width="30">
                                     {% else %}
                                         <img src="{% static 'images/curtidanormal.png' %}" alt="Curtir" width="30">
+                                    {% endif %}
+                                </button>
+                                <button class="btn btn-outline-light favoritar-btn border-0 position-absolute top-0 start-0" data-recomendacao-id="{{ imovel.id }}" data-favorito="{% if request.user in imovel.favoritos.all %}true{% else %}false{% endif %}">
+                                    {% if request.user in imovel.favoritos.all %}
+                                        <img src="{% static 'images/estrela_amarela.png' %}" alt="Favoritar" width="30">
+                                    {% else %}
+                                        <img src="{% static 'images/estrela.png' %}" alt="Favoritar" width="30">
                                     {% endif %}
                                 </button>
                             </div>
@@ -58,27 +66,77 @@
     <!-- Adicione esta linha no cabeçalho do seu template para incluir o jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
-        $('.curtir-btn').on('click', function () {
-            var btn = $(this);
-            var recomendacaoId = btn.data('recomendacao-id');
-            var curtidaStatus = btn.data('curtida');
-            $.ajax({
-                url: `/curtir_recomendacao/${recomendacaoId}/`,
-                method: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    $('#numero_curtidas_' + recomendacaoId).text(data.numero_curtidas);
-                    btn.data('curtida', !curtidaStatus);
-                    if (!curtidaStatus) {
-                        btn.find('img').attr('src', '{% static "images/curtidavermelha.png" %}');
-                    } else {
-                        btn.find('img').attr('src', '{% static "images/curtidanormal.png" %}');
+        $(document).ready(function () {
+            $('.img-zoom').hover(function () {
+                $(this).addClass('transition');
+            }, function () {
+                $(this).removeClass('transition');
+            });
+
+            $('.curtir-btn').on('click', function () {
+                var btn = $(this);
+                var recomendacaoId = btn.data('recomendacao-id');
+                var curtidaStatus = btn.data('curtida');
+                $.ajax({
+                    url: `/curtir_recomendacao/${recomendacaoId}/`,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#numero_curtidas_' + recomendacaoId).text(data.numero_curtidas);
+                        btn.data('curtida', !curtidaStatus);
+                        if (!curtidaStatus) {
+                            btn.find('img').attr('src', '{% static "images/curtidavermelha.png" %}');
+                        } else {
+                            btn.find('img').attr('src', '{% static "images/curtidanormal.png" %}');
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Erro na solicitação AJAX:', error);
                     }
-                },
-                error: function (error) {
-                    console.error('Erro na solicitação AJAX:', error);
-                }
+                });
+            });
+
+            $('.favoritar-btn').on('click', function () {
+                var btn = $(this);
+                var recomendacaoId = btn.data('recomendacao-id');
+                var status = btn.data('favorito') || false;
+                var imgPath = '{% static "images/estrela" %}';  // Atualize esta linha
+                var imgAlt = 'Favoritar';
+
+                $.ajax({
+                    url: `/favoritar_recomendacao/${recomendacaoId}/`,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        // Alterar o status no botão
+                        btn.data('favorito', !status);
+
+                        // Alterar a imagem do botão com base no novo status
+                        var newImgSrc = !status ? imgPath + '_amarela.png' : imgPath + '.png';
+                        btn.find('img').attr('src', newImgSrc).attr('alt', imgAlt);
+
+                        console.log('Status atualizado para:', !status);
+                        console.log('Novo caminho da imagem:', newImgSrc);
+                    },
+                    error: function (error) {
+                        console.error('Erro na solicitação AJAX para favoritar:', error);
+                    }
+                });
             });
         });
     </script>
+
+    <style>
+        .img-zoom-container {
+            overflow: hidden;
+        }
+
+        .img-zoom {
+            transition: transform 0.3s;
+        }
+
+        .img-zoom.transition {
+            transform: scale(0.9);
+        }
+    </style>
 {% endblock content %}
