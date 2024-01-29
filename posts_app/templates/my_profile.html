@@ -89,27 +89,51 @@
 
         <!-- Parte 2: Links de Navegação -->
         <div class="col-md-9">
-            <div class="card menu-card">
-                <div class="card-header">
-                    <!-- Removendo a palavra "Menu" -->
-                    <h1 class="h3 mb-0"></h1>
-                </div>
-                <ul class="nav nav-pills flex-row">
-                    <li class="nav-item">
-                        <a class="nav-link{% if active_tab == 'perfil' %} active{% endif %}" href="#" onclick="loadProfile()">Perfil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link{% if active_tab == 'recomendacoes' %} active{% endif %}" href="{% url 'listar-recomendacoes' %}" onclick="loadRecommendations()">Minhas Recomendações</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link{% if active_tab == 'favoritos' %} active{% endif %}" href="#" onclick="loadFavorites()">Favoritos</a>
-                    </li>
-                </ul>
-            </div>
-
             <!-- Conteúdo principal -->
             <div class="card" id="contentContainer">
                 <!-- O conteúdo será carregado aqui -->
+                <div class="card-header">
+                    <h1 class="h3 mb-0">Editar Meu Perfil</h1>
+                </div>
+                <div class="card-body">
+                    <!-- Formulário de Edição de Perfil -->
+                    <form id="profileForm" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        <!-- Campos do Formulário -->
+                        <div class="mb-3">
+                            <label for="{{ form.first_name.id_for_label }}" class="form-label">Primeiro Nome:</label>
+                            <input type="text" name="first_name" value="{{ user.first_name }}" class="form-control" id="{{ form.first_name.id_for_label }}">
+                            {{ form.first_name.errors }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.last_name.id_for_label }}" class="form-label">Sobrenome:</label>
+                            <input type="text" name="last_name" value="{{ user.last_name }}" class="form-control" id="{{ form.last_name.id_for_label }}">
+                            {{ form.last_name.errors }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">Email:</label>
+                            <input type="email" name="email" value="{{ user.email }}" class="form-control" id="{{ form.email.id_for_label }}">
+                            {{ form.email.errors }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.matricula.id_for_label }}" class="form-label">Matrícula:</label>
+                            <input type="text" name="matricula" value="{{ user.matricula }}" class="form-control" id="{{ form.matricula.id_for_label }}">
+                            {{ form.matricula.errors }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Senha:</label>
+                            <a href="{% url 'password_reset' %}" class="btn btn-link">Alterar Senha</a>
+                        </div>
+                        <!-- Adicione mais campos conforme necessário -->
+                        <!-- Botões de Ação -->
+                        <div class="row justify-content-end">
+                            <button type="button" class="btn btn-secondary" onclick="confirmProfileUpdate()">Cancelar</button>
+                            <button type="button" class="btn btn-primary" onclick="submitProfileForm()">Salvar Alterações</button>
+                            <button type="button" class="btn btn-danger" onclick="excluirConta()">Excluir Conta</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -118,115 +142,130 @@
 <script>
     // Adiciona efeito de destaque ao passar o mouse nos botões
     document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('mouseover', () => {
-            link.classList.add('active-hover');
-        });
-
-        link.addEventListener('mouseout', () => {
-            link.classList.remove('active-hover');
-        });
-
         link.addEventListener('click', () => {
             // Remove a classe 'active' de todos os links antes de adicionar ao clicado
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             link.classList.add('active');
+
+            // Carrega o conteúdo correspondente
+            const tab = link.getAttribute('data-tab');
+            loadContent(tab);
         });
     });
 
-    // Funções para carregar o conteúdo dinamicamente
-    function loadProfile() {
+    // Função para carregar o conteúdo dinamicamente
+    function loadContent(tab) {
         const contentContainer = document.getElementById("contentContainer");
-        contentContainer.innerHTML = `
-            <div class="card-header">
-                <h1 class="h3 mb-0">Editar Meu Perfil</h1>
-            </div>
-            <div class="card-body">
-                <!-- Formulário de Edição de Perfil -->
-                <form id="profileForm" method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form.non_field_errors }}
-                    <!-- Campos do Formulário -->
-                    <div class="mb-3">
-                        <label for="{{ form.first_name.id_for_label }}" class="form-label">Primeiro Nome:</label>
-                        <input type="text" name="first_name" value="{{ user.first_name }}" class="form-control" id="{{ form.first_name.id_for_label }}">
-                        {{ form.first_name.errors }}
-                    </div>
-                    <div class="mb-3">
-                        <label for="{{ form.last_name.id_for_label }}" class="form-label">Sobrenome:</label>
-                        <input type="text" name="last_name" value="{{ user.last_name }}" class="form-control" id="{{ form.last_name.id_for_label }}">
-                        {{ form.last_name.errors }}
-                    </div>
-                    <div class="mb-3">
-                        <label for="{{ form.email.id_for_label }}" class="form-label">Email:</label>
-                        <input type="email" name="email" value="{{ user.email }}" class="form-control" id="{{ form.email.id_for_label }}">
-                        {{ form.email.errors }}
-                    </div>
-                    <div class="mb-3">
-                        <label for="{{ form.matricula.id_for_label }}" class="form-label">Matrícula:</label>
-                        <input type="text" name="matricula" value="{{ user.matricula }}" class="form-control" id="{{ form.matricula.id_for_label }}">
-                        {{ form.matricula.errors }}
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Senha:</label>
-                        <a href="{% url 'password_reset' %}" class="btn btn-link">Alterar Senha</a>
-                    </div>
-                    <!-- Adicione mais campos conforme necessário -->
-                    <!-- Botões de Ação -->
-                    <div class="row justify-content-end">
-                        <button type="button" class="btn btn-secondary" onclick="confirmProfileUpdate()">Cancelar</button>
-                        <button type="button" class="btn btn-primary" onclick="submitProfileForm()">Salvar Alterações</button>
-                    </div>
-                </form>
-            </div>`;
-    }
+        let content = '';
 
-    function loadRecommendations() {
-        const contentContainer = document.getElementById("contentContainer");
-        contentContainer.innerHTML = `
-            <div class="card-header">
-                <h1 class="h3 mb-0">Minhas Recomendações</h1>
-            </div>
-            <div class="card-body">
-                {% if recomendacoes %}
-                <ul class="list-group">
-                    {% for recomendacao in recomendacoes %}
-                        <li class="list-group-item">
-                            <a href="{% url 'recommendation-detail' recomendacao.id %}">
-                                <h3>{{ recomendacao.nome }}</h3>
-                            </a>
-                            <p>Endereço: {{ recomendacao.endereco }}</p>
-                            <p>Valor Aluguel: R$ {{ recomendacao.valor_aluguel }}</p>
-                            <p>Quantidade de Quartos: {{ recomendacao.quantidade_quartos }}</p>
-                            <!-- Adicione outros campos conforme necessário -->
-                        </li>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                    <p>Você ainda não fez nenhuma recomendação.</p>
-                {% endif %}
-            </div>`;
-    }
+        switch (tab) {
+            case 'profile':
+                content = `
+                    <div class="card-header">
+                        <h1 class="h3 mb-0">Editar Meu Perfil</h1>
+                    </div>
+                    <div class="card-body">
+                        <!-- Formulário de Edição de Perfil -->
+                        <form id="profileForm" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            <!-- Campos do Formulário -->
+                            <div class="mb-3">
+                                <label for="{{ form.first_name.id_for_label }}" class="form-label">Primeiro Nome:</label>
+                                <input type="text" name="first_name" value="{{ user.first_name }}" class="form-control" id="{{ form.first_name.id_for_label }}">
+                                {{ form.first_name.errors }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.last_name.id_for_label }}" class="form-label">Sobrenome:</label>
+                                <input type="text" name="last_name" value="{{ user.last_name }}" class="form-control" id="{{ form.last_name.id_for_label }}">
+                                {{ form.last_name.errors }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.email.id_for_label }}" class="form-label">Email:</label>
+                                <input type="email" name="email" value="{{ user.email }}" class="form-control" id="{{ form.email.id_for_label }}">
+                                {{ form.email.errors }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.matricula.id_for_label }}" class="form-label">Matrícula:</label>
+                                <input type="text" name="matricula" value="{{ user.matricula }}" class="form-control" id="{{ form.matricula.id_for_label }}">
+                                {{ form.matricula.errors }}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Senha:</label>
+                                <a href="{% url 'password_reset' %}" class="btn btn-link">Alterar Senha</a>
+                            </div>
+                            <!-- Adicione mais campos conforme necessário -->
+                            <!-- Botões de Ação -->
+                            <div class="row justify-content-end">
+                                <button type="button" class="btn btn-secondary" onclick="confirmProfileUpdate()">Cancelar</button>
+                                <button type="button" class="btn btn-primary" onclick="submitProfileForm()">Salvar Alterações</button>
+                                <button type="button" class="btn btn-danger" onclick="excluirConta()">Excluir Conta</button>
+                            </div>
+                        </form>
+                    </div>`;
+                break;
+        }
 
-    function loadFavorites() {
-        const contentContainer = document.getElementById("contentContainer");
-        contentContainer.innerHTML = `
-            <div class="card-header">
-                <h1 class="h3 mb-0">Favoritos</h1>
-            </div>
-            <div class="card-body">
-                <!-- Conteúdo de favoritos aqui -->
-            </div>`;
+        // Atualiza o conteúdo no contêiner
+        contentContainer.innerHTML = content;
     }
 
     function confirmProfileUpdate() {
         if (confirm("Deseja realmente cancelar as alterações?")) {
-            loadProfile();
+            loadContent('profile');
         }
     }
 
     function submitProfileForm() {
         if (confirm("Deseja salvar as alterações?")) {
-            document.getElementById("profileForm").submit();
+            const form = document.getElementById("profileForm");
+            const formData = new FormData(form);
+    
+            fetch('/atualizar-perfil/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response data:', data);
+                if (data.success) {
+                    alert('Perfil atualizado com sucesso.');
+                } else {
+                    alert('Erro ao atualizar o perfil.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro durante o envio do formulário:', error);
+            });
+        }
+    }
+
+    function excluirConta() {
+        if (confirm("Deseja realmente excluir sua conta? Esta ação não pode ser desfeita.")) {
+            fetch('/excluir-conta/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Sua conta foi excluída com sucesso.');
+                    window.location.href = '/';  // Redirecionar para a página inicial ou outra página após a exclusão
+                } else {
+                    alert('Erro ao excluir a conta.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro durante a exclusão da conta:', error);
+            });
         }
     }
 

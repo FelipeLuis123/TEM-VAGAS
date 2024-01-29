@@ -11,7 +11,9 @@ from django.db.models import Q
 from .forms import ComentarioForm  # Certifique-se de importar o formulário de comentário
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Comentario
+from django.contrib.auth import logout
  
+
 
 def destaques(request):
     # usuarioLogado(request)
@@ -257,3 +259,24 @@ def favoritos(request):
     context = {'recomendacoes_favoritas': recomendacoes_favoritas}
     return render(request, 'favoritos.html', context)
 
+def atualizar_perfil(request):
+    if request.method == 'POST':
+        # Processar e salvar os dados do formulário aqui
+        # ...
+
+        messages.success(request, 'Perfil atualizado com sucesso.')
+        return JsonResponse({'success': True})
+
+    return JsonResponse({'success': False, 'error': 'Método não permitido'})
+
+
+@login_required
+def excluir_conta(request):
+    if request.method == 'POST':
+        # Excluir conta e deslogar usuário
+        request.user.delete()
+        logout(request)
+        messages.success(request, 'Sua conta foi excluída com sucesso.')
+        return JsonResponse({'success': True})
+
+    return JsonResponse({'success': False, 'error': 'Método não permitido'})
