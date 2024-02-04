@@ -1,29 +1,35 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900");
+/* Importação da Fonte com Fallback */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
+/* Cores e Dimensões */
+:root {
+    --cor-azul-navbar: #0040A1;
+    --cor-verde-destaque: #85FF7A;
+}
+
+/* Navbar */
 .navbar {
-    background: #0040A1; /* Cor azul conforme a imagem */
+    background: var(--cor-azul-navbar);
     color: white;
     display: flex;
-    justify-content: space-between; /* Isso irá distribuir o espaço entre os itens */
-    align-items: center; /* Isso irá alinhar os itens verticalmente no centro */
-    padding: 0; /* Ajuste de acordo com o espaço necessário */
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    height: 80px; /* Adicione esta linha para padronizar a altura */
 }
 
-/* Estilos adicionais para a navegação e outros itens da navbar */
-
+/* Logo */
 .logo {
-    width: 73px; /* Largura do logotipo */
-    height: 67px; /* Altura do logotipo */
-    /* 'position: absolute;' foi removido para permitir que 'flexbox' alinhe o logotipo */
+    width: 73px;
+    height: 67px;
 }
+
 .navbar div {
     cursor: pointer;
     padding: 0.5em 1em;
 }
-/* Estilo para o item ativo no menu */
-.navbar .active:hover {
-    color: #85FF7A; /* Cor verde para o item ativo */
-}
+
+/* Banner */
 .banner {
     display: flex;
     justify-content: center;
@@ -33,31 +39,7 @@
     overflow: hidden;
 }
 
-.banner::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6); /* Aumenta a escuridão da sobreposição */
-    z-index: 2; /* Certifique-se de que o z-index está acima da imagem do banner */
-}
-.banner-image {
-    width: 100vw; /* Garante que a largura seja a da viewport */
-    height: 80vh;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1; /* Imagem por trás da sobreposição */
-}
-.banner-text {
-    color: white;
-    text-align: center;
-    z-index: 2; /* Garante que o texto esteja acima da sobreposição */
-    padding: 2em;
-}
+.banner::before,
 .banner-overlay {
     content: '';
     position: absolute;
@@ -65,53 +47,62 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1; /* Sobreposição acima da imagem, mas abaixo do texto */
+    z-index: 2;
 }
-/* Subtítulo do banner */
-/* Título principal do banner */
+
+.banner::before {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.banner-image {
+    width: 100vw;
+    height: 80vh;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.banner-text {
+    color: white;
+    text-align: center;
+    z-index: 3;
+    padding: 2em;
+}
+
+/* Títulos do Banner */
 .banner-text h1 {
     font-size: 3em;
     margin: 0.5em 0;
 }
-/* Palavras destacadas no título */
+
 .banner-text .highlight {
-    color: #85FF7A; /* Cor verde conforme a imagem */
+    color: var(--cor-verde-destaque);
     font-weight: bold;
 }
-/* Texto adicional no banner */
+
 .banner-text p {
     font-size: 1em;
     margin-top: 0.5em;
 }
-/* Estilo para 'A Melhor Solução' */
+
 .banner-text .best-solution {
     font-size: 1.5em;
-    color: #85FF7A;
+    color: var(--cor-verde-destaque);
     font-weight: bold;
     margin-top: 2em;
 }
 
-/* Conteúdo do arquivo styles.css */
-.navbar-nav .nav-link:hover {
-    /* background-color: #007bff; */
-    color: #fff;
-}
-
-.nav-link.active {
-    background-color: #007bff;
-    color: #fff;
-}
-
-
-/* Estilos para telas grandes (desktops) */
+/* Estilos para telas grandes */
 @media (min-width: 992px) {
-    .navbar {
-        padding: 0; /* Ajuste de acordo com o espaço necessário */
+    .navbar, .logo, .navbar div {
+        padding: 0;
     }
 
     .logo {
-        width: 73px; /* Largura do logotipo */
-        height: 67px; /* Altura do logotipo */
+        width: 73px;
+        height: 67px;
     }
 
     .navbar div {
@@ -119,7 +110,7 @@
     }
 }
 
-/* Estilos para telas médias (tablets) */
+/* Estilos para telas médias */
 @media (max-width: 991px) {
     .navbar {
         flex-direction: column;
@@ -131,12 +122,12 @@
     }
 
     .logo {
-        width: 50px; /* Ajuste a largura para telas médias */
-        height: 46px; /* Ajuste a altura para telas médias */
+        width: 50px;
+        height: 46px;
     }
 }
 
-/* Estilos para telas pequenas (smartphones) */
+/* Estilos para telas pequenas */
 @media (max-width: 576px) {
     .navbar {
         padding: 0.5em;
@@ -147,16 +138,16 @@
     }
 
     .logo {
-        width: 40px; /* Ajuste a largura para telas pequenas */
-        height: 37px; /* Ajuste a altura para telas pequenas */
+        width: 40px;
+        height: 37px;
     }
 
     .banner-text h1 {
-        font-size: 2em; /* Ajuste o tamanho da fonte para telas pequenas */
+        font-size: 2em;
     }
 
     .banner-text .best-solution {
-        font-size: 1.2em; /* Ajuste o tamanho da fonte para telas pequenas */
-        margin-top: 1em; /* Ajuste a margem para telas pequenas */
+        font-size: 1.2em;
+        margin-top: 1em;
     }
 }

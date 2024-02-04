@@ -14,7 +14,6 @@ from .models import Comentario
 from django.contrib.auth import logout
  
 
-
 def destaques(request):
     # usuarioLogado(request)
     template_name = 'main-page.html'  # template
@@ -261,22 +260,46 @@ def favoritos(request):
 
 def atualizar_perfil(request):
     if request.method == 'POST':
-        # Processar e salvar os dados do formulário aqui
-        # ...
+        form = UserProfileForm(request.POST)
+        if form.is_valid():
+            # Atualize os dados do usuário com base no formulário
+            user = request.user
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.email = form.cleaned_data['email']
+            user.password = form.cleaned_data['password']
+ 
+            
+            # Adicione outros campos conforme necessário
 
-        messages.success(request, 'Perfil atualizado com sucesso.')
-        return JsonResponse({'success': True})
+            # Salve o usuário
+            user.save()
 
+            messages.success(request, 'Perfil atualizado com sucesso.')
+            return JsonResponse({'success': True})
+
+        else:
+            # Se o formulário não for válido, retorne os erros
+            return JsonResponse({'success': False, 'errors': form.errors})
+    
     return JsonResponse({'success': False, 'error': 'Método não permitido'})
-
+import logging
+logger = logging.getLogger(__name__)
 
 @login_required
 def excluir_conta(request):
     if request.method == 'POST':
-        # Excluir conta e deslogar usuário
-        request.user.delete()
-        logout(request)
-        messages.success(request, 'Sua conta foi excluída com sucesso.')
-        return JsonResponse({'success': True})
+        try:
+            logger.info(f'Antes da exclusão. Usuário: {request.user.username}')
+            # Excluir conta e deslogar usuário
+            request.user.delete()
+            logger.info('Conta excluída com sucesso.')
+            logout(request)
+            messages.success(request, 'Sua conta foi excluída com sucesso.')
+            return HttpResponseRedirect(reverse('nome_da_sua_homepage'))
+        except Exception as e:
+            logger.error(f'Erro ao excluir a conta: {str(e)}')
+            # Em caso de erro ao excluir a conta, capturar a exceção e retornar uma mensagem de erro
+            return JsonResponse({'success': False, 'error': str(e)})
 
     return JsonResponse({'success': False, 'error': 'Método não permitido'})

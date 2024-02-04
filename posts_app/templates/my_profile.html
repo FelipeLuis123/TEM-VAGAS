@@ -3,29 +3,6 @@
 {% load static %}
 
 <style>
-    .profile-section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .profile-picture-container {
-        position: relative;
-        width: 120px;
-        height: 120px;
-        overflow: hidden;
-        border-radius: 50%;
-        margin: 20px 0;
-        transition: border 0.3s;
-    }
-
-    .profile-picture {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-    }
-
     .edit-button-container {
         margin-top: 10px;
         text-align: center;
@@ -68,27 +45,8 @@
 
 <div class="container-fluid mt-5">
     <div class="row">
-        <!-- Parte 1: Foto do Usuário -->
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="h3 mb-0">Perfil</h1>
-                </div>
-                <div class="profile-section">
-                    <div class="profile-picture-container">
-                        <img src="{% static 'perfil_usuario.png' %}" alt="Profile Picture" class="profile-picture" id="profileImage">
-                    </div>
-                    <div class="edit-button-container">
-                        <label for="fileInput" class="btn btn-primary">Escolher nova foto</label>
-                        <input type="file" id="fileInput" class="file-input" accept="image/*" onchange="previewImage(this)">
-                        <button type="button" class="btn btn-secondary edit-button" onclick="uploadNewImage()">Salvar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Parte 2: Links de Navegação -->
-        <div class="col-md-9">
+        <div class="col-md-12">
             <!-- Conteúdo principal -->
             <div class="card" id="contentContainer">
                 <!-- O conteúdo será carregado aqui -->
@@ -199,7 +157,7 @@
                             <div class="row justify-content-end">
                                 <button type="button" class="btn btn-secondary" onclick="confirmProfileUpdate()">Cancelar</button>
                                 <button type="button" class="btn btn-primary" onclick="submitProfileForm()">Salvar Alterações</button>
-                                <button type="button" class="btn btn-danger" onclick="excluirConta()">Excluir Conta</button>
+                                <button type="button" class="btn btn-danger" onclick="excluirConta()">Excluir Conta</button>     
                             </div>
                         </form>
                     </div>`;
@@ -267,41 +225,6 @@
                 console.error('Erro durante a exclusão da conta:', error);
             });
         }
-    }
-
-    function previewImage(input) {
-        const profileImage = document.getElementById('profileImage');
-        const file = input.files[0];
-
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                profileImage.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-
-    function uploadNewImage() {
-        const fileInput = document.getElementById('fileInput');
-        const formData = new FormData();
-        formData.append('profile_image', fileInput.files[0]);
-
-        // Envie formData para o servidor usando uma solicitação AJAX ou outra abordagem
-
-        // Exemplo de solicitação AJAX usando Fetch API
-        fetch('/url/do/seu/endpoint/', {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Lógica para tratar a resposta do servidor
-            console.log(data);
-        })
-        .catch(error => {
-            console.error('Erro durante o envio da imagem:', error);
-        });
     }
 </script>
 

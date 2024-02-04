@@ -9,68 +9,13 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- CSS personalizado -->
-    <link rel="stylesheet" href="{% static 'css/sobre_nos.css' %}">
     <link rel="stylesheet" href="{% static 'css/_navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sobre_nos.css' %}">
+    {% include '_navbar.html' %}
 </head>
 
 <body>
-    {% include '_navbar.html' %}
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <img class="logo" src="{% static 'images/logo3.png' %}" alt="Logo"/>
-            </a>
-            <!-- Navbar content -->
-            <div class="collapse navbar-collapse justify-content-center" id="navbarCenteredContent">
-                <div class="navbar-nav">
-                    <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/"> Início</a>
-                    <a class="nav-link {% if request.path == '/create-recommendation' %}active{% endif %}" href="{% url 'create-recommendation' %}">Recomende Aqui</a>
-                    <a class="nav-link {% if request.path == '/listar-recomendacoes/' %}active{% endif %}" href="{% url 'listar-recomendacoes' %}">Minhas Recomendações</a>
-                    <a class="nav-link {% if request.path == '/favoritos/' %}active{% endif %}" href="{% url 'favoritos' %}">Favoritos</a>                    
-                    <a class="nav-link {% if request.path == '/sobre_nos/' %}active{% endif %}" href="{% url 'sobre_nos' %}">Sobre nós</a>
-                </div>
-                <!-- Linha divisória -->
-                <hr class="d-lg-none">
-            </div>            
-            <!-- Dropdown on the right side -->
-            <div class="d-flex">
-                <!-- Contêiner da Lista de Navegação -->
-                <ul class="navbar-nav">
-                    <!-- Item Dropdown Configurações -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-light " role="button" data-bs-toggle="dropdown" aria-expanded="true">
-                            Configurações <img src="{% static 'images/engrenagem.png' %}" alt="Engrenagem">
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{% url 'meu-perfil' %}">Perfil</a></li>
-                            {% if user.is_authenticated %}
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'logout' %}" id="logoutButton">Sair</a></li>
-                            {% else %}
-                                <li><a class="dropdown-item" href="{% url 'register' %}">Registrar</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'login' %}">Entrar</a></li>
-                            {% endif %}
-                        </ul>
-                    </li>
-                </ul>
-            </div>                      
-            <script>
-                document.getElementById('logoutButton').addEventListener('click', function(event) {
-                    event.preventDefault();
-                    fetch('{% url 'logout' %}')
-                    .then(response => {
-                        // Lidar com a resposta
-                        window.location.href = '{% url 'logout' %}';
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                    });
-                });
-            </script>
-        </div>
-    </nav>
-  
+
     <div class="container my-5 container-content">
         <div class="row">
             <div class="col-md-8 offset-md-2">
@@ -211,9 +156,7 @@
     </div>
 
     {% include 'footer.html' %}
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+ </body>
 
 </html>
