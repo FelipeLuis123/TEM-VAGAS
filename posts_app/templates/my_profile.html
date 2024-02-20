@@ -45,20 +45,15 @@
 
 <div class="container-fluid mt-5">
     <div class="row">
-        <!-- Parte 2: Links de Navegação -->
         <div class="col-md-12">
-            <!-- Conteúdo principal -->
             <div class="card" id="contentContainer">
-                <!-- O conteúdo será carregado aqui -->
                 <div class="card-header">
                     <h1 class="h3 mb-0">Editar Meu Perfil</h1>
                 </div>
                 <div class="card-body">
-                    <!-- Formulário de Edição de Perfil -->
-                    <form id="profileForm" method="post" enctype="multipart/form-data">
+                    <form id="profileForm" method="post" enctype="multipart/form-data" action="{% url 'atualizar_perfil' %}">
                         {% csrf_token %}
                         {{ form.non_field_errors }}
-                        <!-- Campos do Formulário -->
                         <div class="mb-3">
                             <label for="{{ form.first_name.id_for_label }}" class="form-label">Primeiro Nome:</label>
                             <input type="text" name="first_name" value="{{ user.first_name }}" class="form-control" id="{{ form.first_name.id_for_label }}">
@@ -83,8 +78,6 @@
                             <label class="form-label">Senha:</label>
                             <a href="{% url 'password_reset' %}" class="btn btn-link">Alterar Senha</a>
                         </div>
-                        <!-- Adicione mais campos conforme necessário -->
-                        <!-- Botões de Ação -->
                         <div class="row justify-content-end">
                             <button type="button" class="btn btn-secondary" onclick="confirmProfileUpdate()">Cancelar</button>
                             <button type="button" class="btn btn-primary" onclick="submitProfileForm()">Salvar Alterações</button>
@@ -98,118 +91,50 @@
 </div>
 
 <script>
-    // Adiciona efeito de destaque ao passar o mouse nos botões
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            // Remove a classe 'active' de todos os links antes de adicionar ao clicado
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
-
-            // Carrega o conteúdo correspondente
-            const tab = link.getAttribute('data-tab');
-            loadContent(tab);
-        });
-    });
-
-    // Função para carregar o conteúdo dinamicamente
-    function loadContent(tab) {
-        const contentContainer = document.getElementById("contentContainer");
-        let content = '';
-
-        switch (tab) {
-            case 'profile':
-                content = `
-                    <div class="card-header">
-                        <h1 class="h3 mb-0">Editar Meu Perfil</h1>
-                    </div>
-                    <div class="card-body">
-                        <!-- Formulário de Edição de Perfil -->
-                        <form id="profileForm" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {{ form.non_field_errors }}
-                            <!-- Campos do Formulário -->
-                            <div class="mb-3">
-                                <label for="{{ form.first_name.id_for_label }}" class="form-label">Primeiro Nome:</label>
-                                <input type="text" name="first_name" value="{{ user.first_name }}" class="form-control" id="{{ form.first_name.id_for_label }}">
-                                {{ form.first_name.errors }}
-                            </div>
-                            <div class="mb-3">
-                                <label for="{{ form.last_name.id_for_label }}" class="form-label">Sobrenome:</label>
-                                <input type="text" name="last_name" value="{{ user.last_name }}" class="form-control" id="{{ form.last_name.id_for_label }}">
-                                {{ form.last_name.errors }}
-                            </div>
-                            <div class="mb-3">
-                                <label for="{{ form.email.id_for_label }}" class="form-label">Email:</label>
-                                <input type="email" name="email" value="{{ user.email }}" class="form-control" id="{{ form.email.id_for_label }}">
-                                {{ form.email.errors }}
-                            </div>
-                            <div class="mb-3">
-                                <label for="{{ form.matricula.id_for_label }}" class="form-label">Matrícula:</label>
-                                <input type="text" name="matricula" value="{{ user.matricula }}" class="form-control" id="{{ form.matricula.id_for_label }}">
-                                {{ form.matricula.errors }}
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Senha:</label>
-                                <a href="{% url 'password_reset' %}" class="btn btn-link">Alterar Senha</a>
-                            </div>
-                            <!-- Adicione mais campos conforme necessário -->
-                            <!-- Botões de Ação -->
-                            <div class="row justify-content-end">
-                                <button type="button" class="btn btn-secondary" onclick="confirmProfileUpdate()">Cancelar</button>
-                                <button type="button" class="btn btn-primary" onclick="submitProfileForm()">Salvar Alterações</button>
-                                <button type="button" class="btn btn-danger" onclick="excluirConta()">Excluir Conta</button>     
-                            </div>
-                        </form>
-                    </div>`;
-                break;
-        }
-
-        // Atualiza o conteúdo no contêiner
-        contentContainer.innerHTML = content;
-    }
-
     function confirmProfileUpdate() {
         if (confirm("Deseja realmente cancelar as alterações?")) {
-            loadContent('profile');
+            // Implemente o que deseja fazer ao cancelar as alterações
         }
     }
 
     function submitProfileForm() {
         if (confirm("Deseja salvar as alterações?")) {
             const form = document.getElementById("profileForm");
-            const formData = new FormData(form);
-    
-            fetch('/atualizar-perfil/', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken'),
-                },
-            })
-            .then(response => {
-                console.log('Response status:', response.status);
-                return response.json();
-            })
-            .then(data => {
-                console.log('Response data:', data);
-                if (data.success) {
-                    alert('Perfil atualizado com sucesso.');
-                } else {
-                    alert('Erro ao atualizar o perfil.');
-                }
-            })
-            .catch(error => {
-                console.error('Erro durante o envio do formulário:', error);
-            });
+
+            // Verifique se o formulário foi encontrado
+            if (form) {
+                const formData = new FormData(form);
+
+                fetch('{% url "atualizar_perfil" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Perfil atualizado com sucesso.');
+                    } else {
+                        alert('Erro ao atualizar o perfil.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro durante o envio do formulário:', error);
+                });
+            } else {
+                console.error('Elemento do formulário não encontrado pelo ID.');
+            }
         }
     }
 
     function excluirConta() {
         if (confirm("Deseja realmente excluir sua conta? Esta ação não pode ser desfeita.")) {
-            fetch('/excluir-conta/', {
+            fetch('{% url "excluir_conta" %}', {
                 method: 'POST',
                 headers: {
-                    'X-CSRFToken': getCookie('csrftoken'),
+                    'X-CSRFToken': document.getElementsByName('csrfmiddlewaretoken')[0].value,
                 },
             })
             .then(response => response.json())

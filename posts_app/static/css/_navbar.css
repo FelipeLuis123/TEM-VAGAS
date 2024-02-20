@@ -151,3 +151,15 @@
         margin-top: 1em;
     }
 }
+
+/* Estilos específicos para o Navbar */
+.navbar-nav a.nav-link {
+    color: white !important; /* Cor padrão para o texto do navbar */
+}
+
+.navbar-nav a.nav-link:hover,
+.navbar-nav a.nav-link.active {
+    background-color: var(--cor-verde-destaque); /* Cor de fundo ao passar o mouse sobre o texto do navbar e para a página ativa */
+    color: black !important; /* Cor do texto para o link ativo */
+    transition: background-color 0.3s ease;
+}

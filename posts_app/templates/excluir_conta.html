@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-danger text-white">
+            <h2 class="h4 mb-0">Confirmar Exclusão de Conta</h2>
+          </div>
+          <div class="card-body">
+            <p>Tem certeza de que deseja excluir sua conta?</p>
+            <p>Esta ação é irreversível e removerá permanentemente sua conta do sistema.</p>
+            <form method="post" action="{% url 'excluir-conta' %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Sim, Excluir Minha Conta</button>
+              <a href="{% url 'my-profile' %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

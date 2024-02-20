@@ -20,8 +20,8 @@ urlpatterns = [
     path('buscar-recomendacoes/<str:tipo_imovel>/', views.buscar_recomendacoes, name='buscar-recomendacoes'),
     path('favoritar_recomendacao/<int:id>/', views.favoritar_recomendacao, name='favoritar_recomendacao'),
     path('favoritos/', views.favoritos, name='favoritos'),
-    path('atualizar-perfil/', views.atualizar_perfil, name='atualizar-perfil'),
-    path('excluir-conta/', views.excluir_conta, name='excluir-conta'),
-]
+    path('excluir-conta/', views.excluir_conta, name='excluir_conta'),
+    path('atualizar_perfil/', views.atualizar_perfil, name='atualizar_perfil'),
+    ]
 
 

@@ -2,6 +2,9 @@
 from django import forms
 from .models import recomendacoes
 from .models import Comentario
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserChangeForm
+
 
 class RecommendationForm(forms.ModelForm):
     class Meta:
@@ -19,7 +22,13 @@ class ComentarioForm(forms.ModelForm):
         fields = ["texto"]
         
         
+from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import UserChangeForm
 
+class UserProfileForm(UserChangeForm):
+    class Meta:
+        model = get_user_model()
+        fields = ['first_name', 'last_name', 'email', 'password']
 
 
 

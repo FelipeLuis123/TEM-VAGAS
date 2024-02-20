@@ -28,7 +28,6 @@ SECRET_KEY = 'django-insecure-y$3g1&r-n&q=9_t90e%@t#pj8hu((du1i^96+hmqy#9i0wcef8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -42,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'posts_app',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -140,7 +140,16 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'seu_servidor_smtp'
+EMAIL_PORT = 587  # Use 587 para TLS
+EMAIL_USE_TLS = True  # Use True para TLS, False para SSL
+
+# Configurações adicionais, substitua pelos seus próprios valores
+EMAIL_HOST_USER = 'seu_email@example.com'
+EMAIL_HOST_PASSWORD = 'sua_senha'
+DEFAULT_FROM_EMAIL = 'seu_email@example.com'
+
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/'

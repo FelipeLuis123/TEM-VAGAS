@@ -8,7 +8,6 @@ class recomendacoes(models.Model):
     telefone = models.CharField(max_length=15)
     tipo_imovel = models.CharField(max_length=100)
     endereco = models.CharField(max_length=255)
-    logradouro = models.CharField(max_length=255)
     numero = models.CharField(max_length=5)
     bairro = models.CharField(max_length=255)
     cidade = models.CharField(max_length=15)
