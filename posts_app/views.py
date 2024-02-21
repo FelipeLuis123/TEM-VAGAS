@@ -277,13 +277,11 @@ from django.http import JsonResponse
 @login_required
 def atualizar_perfil(request):
     if request.method == 'POST':
-        # Obtenha os dados do formulário enviado
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         email = request.POST.get('email')
         matricula = request.POST.get('matricula')
 
-        # Atualize as informações do perfil do usuário
         user = request.user
         user.first_name = first_name
         user.last_name = last_name

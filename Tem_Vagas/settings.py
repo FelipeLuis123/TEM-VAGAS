@@ -29,7 +29,10 @@ SECRET_KEY = 'django-insecure-y$3g1&r-n&q=9_t90e%@t#pj8hu((du1i^96+hmqy#9i0wcef8
 DEBUG = True
 
 
-
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+}
 # Application definition
 
 INSTALLED_APPS = [
