@@ -45,38 +45,37 @@
 </head>
 <body>
     {% include '_navbar.html' %}
-    <div class="recomendacoes mb-4">
-        <form id="searchForm" action="{% url 'buscar-recomendacoes' %}" method="GET" class="d-flex">
-            <div class="btn-group" role="group" aria-label="Categorias">
-                <a href="{% url 'buscar-recomendacoes' tipo_imovel='casa' %}" class="btn btn-outline-primary border-0">
-                    <img class="icon" src="{% static 'images/casa.png' %}" alt="Casa" />
-                    Casas
-                </a>
-                
-                <a href="{% url 'buscar-recomendacoes' tipo_imovel='kitnet' %}" class="btn btn-outline-primary border-0">
-                    <img class="icon" src="{% static 'images/kitnets.png' %}" alt="Kitnet" />
-                    Kitnets
-                </a>
-                
-                <a href="{% url 'buscar-recomendacoes' tipo_imovel='compartilhar' %}" class="btn btn-outline-primary border-0">
-                    <img class="icon" src="{% static 'images/compartilhar.png' %}" alt="Compartilhar" />
-                    Compartilhar
-                </a>
-                
-                <a href="{% url 'buscar-recomendacoes' tipo_imovel='condominio' %}" class="btn btn-outline-primary border-0">
-                    <img class="icon" src="{% static 'images/kitnets.png' %}" alt="Condomínio" />
-                    Condomínio
-                </a>
-                
-            </div>
-            <div class="input-group">
-                <input id="searchInput" class="form-control rounded" type="search" name="q" placeholder="Encontre imóveis...">
-                <button class="btn btn-outline-secondary" type="submit">
-                    <img src="{% static 'images/lupa.png' %}" alt="Lupa" width="20">
-                </button>
-            </div>
-        </form>
-    </div>
+    <div class="recomendacoes mb-4 text-center">
+    <form id="searchForm" action="{% url 'buscar-recomendacoes' %}" method="GET" class="mx-auto d-flex justify-content-center">
+        <div class="btn-group" role="group" aria-label="Categorias">
+            <a href="{% url 'buscar-recomendacoes' tipo_imovel='casa' %}" class="btn btn-outline-primary border-0">
+                <img class="icon" src="{% static 'images/casa.png' %}" alt="Casa" />
+                Casas
+            </a>
+            <a href="{% url 'buscar-recomendacoes' tipo_imovel='kitnet' %}" class="btn btn-outline-primary border-0">
+                <img class="icon" src="{% static 'images/kitnets.png' %}" alt="Kitnet" />
+                Kitnets
+            </a>
+            <a href="{% url 'buscar-recomendacoes' tipo_imovel='compartilhar' %}" class="btn btn-outline-primary border-0">
+                <img class="icon" src="{% static 'images/compartilhar.png' %}" alt="Compartilhar" />
+                Compartilhar
+            </a>
+            <a href="{% url 'buscar-recomendacoes' tipo_imovel='condominio' %}" class="btn btn-outline-primary border-0">
+                <img class="icon" src="{% static 'images/kitnets.png' %}" alt="Condomínio" />
+                Condomínio
+            </a>
+        </div>
+        <div class="input-group">
+            <input id="searchInput" class="form-control rounded" type="search" name="q" placeholder="Encontre imóveis...">
+            <button class="btn btn-outline-secondary" type="submit">
+                <img src="{% static 'images/lupa.png' %}" alt="Lupa" width="20">
+            </button>
+        </div>
+    </form>
+</div>
+
+
+    
     {% include '_message.html' %}
     <div class="container">
         <div class="container p-5">
