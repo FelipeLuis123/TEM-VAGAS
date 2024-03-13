@@ -6,7 +6,13 @@ from django.contrib.auth import get_user_model
 class recomendacoes(models.Model):
     nome = models.CharField(max_length=100)
     telefone = models.CharField(max_length=15)
-    tipo_imovel = models.CharField(max_length=100)
+    TIPOS_IMOVEL = [
+        ('Casa', 'Casa'),
+        ('Kitnet', 'Kit-net'),
+        ('Compartilhar', 'Compartilhar'),
+        ('Condominio', 'Condomínio'),
+    ]
+    tipo_imovel = models.CharField(max_length=100, choices=TIPOS_IMOVEL)
     endereco = models.CharField(max_length=255)
     numero = models.CharField(max_length=5)
     bairro = models.CharField(max_length=255)
